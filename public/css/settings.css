@@ -1,0 +1,93 @@
+@import "variables.css";
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+.settings-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 26px;
+    border-bottom: 1px solid rgba(31,41,55,0.9);
+    background: radial-gradient(circle at top left, rgba(15,23,42,0.95), rgba(2,6,23,0.96));
+}
+
+.settings-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.settings-meta {
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.settings-content {
+    padding: 22px 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    overflow-y: auto;
+}
+
+.settings-card {
+    background:
+        radial-gradient(circle at 0 0, rgba(148,163,184,0.12), transparent 55%),
+        linear-gradient(to bottom right, rgba(15,23,42,0.98), rgba(15,23,42,0.97));
+    border-radius: 16px;
+    padding: 18px 20px;
+    border: 1px solid rgba(31,41,55,0.95);
+    box-shadow: var(--shadow-soft);
+}
+
+.settings-card-title {
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    color: var(--text);
+}
+
+.settings-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.settings-form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.settings-form-label {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.settings-input {
+    background-color: rgba(15,23,42,0.96);
+    border-radius: 999px;
+    border: 1px solid rgba(31,41,55,0.95);
+    padding: 9px 14px;
+    font-size: 15px;
+    color: var(--text);
+    outline: none;
+}
+
+.settings-btn {
+    border-radius: 999px;
+    border: 1px solid transparent;
+    padding: 9px 16px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: var(--transition);
+    background-color: var(--accent);
+    color: #f9fafb;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}

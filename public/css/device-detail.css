@@ -1,0 +1,100 @@
+@import "variables.css";
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+.device-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 26px;
+    background: radial-gradient(circle at top left, rgba(15,23,42,0.95), rgba(2,6,23,0.96));
+    border-bottom: 1px solid rgba(31,41,55,0.9);
+}
+
+.device-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.device-meta {
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.device-content {
+    padding: 22px 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    overflow-y: auto;
+}
+
+.device-card {
+    background:
+        radial-gradient(circle at 0 0, rgba(148,163,184,0.12), transparent 55%),
+        linear-gradient(to bottom right, rgba(15,23,42,0.98), rgba(15,23,42,0.97));
+    border-radius: 16px;
+    padding: 18px 20px;
+    border: 1px solid rgba(31,41,55,0.95);
+    box-shadow: var(--shadow-soft);
+}
+
+.device-card-title {
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    color: var(--text);
+}
+
+.device-card-value {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: var(--accent);
+}
+
+.device-status-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 11px;
+    border-radius: 999px;
+    font-size: 13px;
+    border: 1px solid transparent;
+    background-color: rgba(15,23,42,0.95);
+}
+
+.device-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.device-form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.device-form-label {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.device-btn {
+    border-radius: 999px;
+    border: 1px solid transparent;
+    padding: 9px 16px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: var(--transition);
+    background-color: var(--accent);
+    color: #f9fafb;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
