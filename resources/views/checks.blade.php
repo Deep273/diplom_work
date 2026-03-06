@@ -203,11 +203,40 @@
         btn.disabled = true;
 
         setTimeout(() => {
-            btn.textContent = 'Готово!';
-            setTimeout(() => {
-                btn.textContent = originalText;
-                btn.disabled = false;
-            }, 1500);
+            const result = 'Успешно (12ms)'; // сюда можешь подставлять реальный результат
+
+            // Отправляем данные на сервер Laravel
+            fetch('{{ route("checks.run") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    checkType: checkType,
+                    result: result
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        btn.textContent = 'Готово!';
+                    } else {
+                        btn.textContent = 'Ошибка!';
+                        console.error(data.message);
+                    }
+                })
+                .catch(err => {
+                    btn.textContent = 'Ошибка!';
+                    console.error(err);
+                })
+                .finally(() => {
+                    setTimeout(() => {
+                        btn.textContent = originalText;
+                        btn.disabled = false;
+                    }, 1500);
+                });
+
         }, 2000);
     }
 

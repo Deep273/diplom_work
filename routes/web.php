@@ -2,8 +2,9 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CheckController;
 
-
+Route::post('/checks/run', [CheckController::class, 'saveToFirebase'])->name('checks.run');
 Route::get('/', function () {
     return redirect('/checks');
 });
