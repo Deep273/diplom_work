@@ -1,7 +1,5 @@
-/* devices.css */
-@import "variables.css";
+@import url('./variables.css');
 
-/* PAGE LAYOUT */
 .layout {
     display: flex;
     width: 100%;
@@ -9,7 +7,6 @@
     background: radial-gradient(circle at top left, #1f2937 0, #020617 45%, #000 100%);
 }
 
-/* SIDEBAR (берём общий стиль из checks.css) */
 .sidebar {
     width: var(--sidebar-width);
     background: #020617;

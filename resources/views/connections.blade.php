@@ -5,7 +5,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Связь</title>
     <link rel="stylesheet" href="{{ asset('css/variables.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/connections.css') }}">
     <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
 </head>
 <body>
@@ -21,6 +21,7 @@
         </nav>
         <div class="sidebar-footer">
             <span class="sidebar-user">admin</span>
+            <a href="{{ route('login') }}" class="nav-item btn-logout">Выход</a>
         </div>
     </aside>
 
@@ -49,7 +50,6 @@
                 <div id="networkGraph" style="width: 100%; height: 100%;"></div>
             </div>
 
-            <!-- Таблица связей -->
             <div class="card" style="margin-top: 18px;">
                 <div class="card-title">
                     Список связей
@@ -85,8 +85,6 @@
         </section>
     </main>
 </div>
-
-<!-- Модалка добавления связи -->
 <div id="addConnectionModal" class="modal">
     <div class="modal-overlay" onclick="closeConnectionModal()"></div>
     <div class="modal-content">
@@ -124,24 +122,6 @@
     </div>
 </div>
 
-<style>
-    .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 1000; align-items: center; justify-content: center; }
-    .modal.active { display: flex; }
-    .modal-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); }
-    .modal-content {
-        background: var(--bg-card);
-        border-radius: var(--radius);
-        border: 1px solid var(--border);
-        width: 100%;
-        max-width: 420px;
-        max-height: 90vh;
-        overflow-y: auto;
-        box-shadow: var(--shadow);
-        position: relative;
-        margin: 20px;
-    }
-</style>
-
 <script>
     function openAddConnectionModal() {
         document.getElementById('addConnectionModal').classList.add('active');
@@ -163,7 +143,6 @@
             timestamp: new Date().toISOString()
         };
 
-        // Сохраняем в Firebase
         fetch('/connections/save', {
             method: 'POST',
             headers: {
@@ -176,8 +155,6 @@
             closeConnectionModal();
         });
     }
-
-    // Граф связей Vis.js
     const nodes = new vis.DataSet([
         { id: 1, label: 'Core Router 1', group: 'router', color: '#3b82f6' },
         { id: 2, label: 'Switch 7', group: 'switch', color: '#10b981' },

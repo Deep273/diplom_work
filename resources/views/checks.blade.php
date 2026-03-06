@@ -18,15 +18,14 @@
         </nav>
         <div class="sidebar-footer">
             <span class="sidebar-user">admin</span>
+            <a href="{{ route('login') }}" class="nav-item btn-logout">Выход</a>
         </div>
     </aside>
-
     <main class="main">
         <header class="main-header">
             <h1 class="page-title">Проверки</h1>
             <div class="header-meta">Запуск скриптов для тестирования оборудования</div>
         </header>
-
         <section class="page-content">
             <div class="page-toolbar">
                 <div class="filters">
@@ -42,7 +41,6 @@
                     <button class="btn btn-primary" onclick="openCheckModal(null)">Новая проверка</button>
                 </div>
             </div>
-
             <div class="cards">
                 <div class="card">
                     <div class="card-title">
@@ -61,7 +59,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="card" style="margin-top: 18px;">
                 <div class="card-title">Доступные проверки</div>
                 <div class="table-wrapper">
@@ -136,8 +133,6 @@
         </section>
     </main>
 </div>
-
-<!-- Модальное окно настроек проверки -->
 <div id="checkModal" class="modal">
     <div class="modal-overlay" onclick="closeCheckModal()"></div>
     <div class="modal-content" style="max-width: 580px;">
@@ -196,16 +191,13 @@
     }
 
     function runCheck(checkType) {
-        // Имитация запуска ОНО РЕАЛЬНО РАБОТАЕТ НИ-
         const btn = event.target;
         const originalText = btn.textContent;
-        btn.textContent = '⏳ Запуск...';
+        btn.textContent = 'Запуск...';
         btn.disabled = true;
 
         setTimeout(() => {
-            const result = 'Успешно (12ms)'; // сюда можешь подставлять реальный результат
-
-            // Отправляем данные на сервер Laravel
+            const result = 'Успешно (12ms)';
             fetch('{{ route("checks.run") }}', {
                 method: 'POST',
                 headers: {
@@ -254,8 +246,6 @@
         alert('Проверка запущена!');
         closeCheckModal();
     }
-
-    // эскейп типа закрытие
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') closeCheckModal();
     });

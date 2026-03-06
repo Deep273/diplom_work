@@ -19,15 +19,14 @@
         </nav>
         <div class="sidebar-footer">
             <span class="sidebar-user">admin</span>
+            <a href="{{ route('login') }}" class="nav-item btn-logout">Выход</a>
         </div>
     </aside>
-
     <main class="main">
         <header class="main-header">
             <h1 class="page-title">Детализация устройства</h1>
             <div class="header-meta">Core Router 1</div>
         </header>
-
         <section class="page-content">
             <div class="grid-2">
                 <div class="card">
@@ -67,7 +66,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="card">
                     <div class="card-title">
                         Связанные устройства

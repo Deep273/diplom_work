@@ -20,15 +20,14 @@
         </nav>
         <div class="sidebar-footer">
             <span class="sidebar-user">admin</span>
+            <a href="{{ route('login') }}" class="nav-item btn-logout">Выход</a>
         </div>
     </aside>
-
     <main class="main">
         <header class="main-header">
             <h1 class="page-title">Настройки</h1>
             <div class="header-meta">Учётные записи и авторизация</div>
         </header>
-
         <section class="page-content">
             <div class="settings-grid">
                 <div class="settings-card">
@@ -52,11 +51,8 @@
                         <button class="btn btn-primary" type="button" onclick="saveAccount()">Сохранить</button>
                     </form>
                 </div>
-
-                <!-- Учетки и авторизация -->
                 <div class="settings-card">
                     <div class="card-title">Учетки и авторизация</div>
-
                     <div class="form" style="margin-bottom: 14px;">
                         <label class="form-field">
                             <span class="form-label">Режим авторизации</span>
@@ -98,7 +94,6 @@
         </section>
     </main>
 </div>
-
 <script>
     function saveAccount() {
         const formData = {
@@ -123,7 +118,6 @@
             })
             .catch(error => alert('Ошибка: ' + error));
     }
-
     function addUser() {
         alert('Добавить учетку');
     }

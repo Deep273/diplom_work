@@ -13,9 +13,7 @@
         <div class="sidebar-logo">DM</div>
         <nav class="sidebar-nav">
             <a href="{{ route('dashboard') }}" class="nav-item">Главная</a>
-            <!-- Всегда активный раздел -->
             <a href="{{ route('devices') }}" class="nav-item nav-item-section active">Устройства</a>
-            <!-- Подгруппы внутри раздела Устройства -->
             <a href="#workstations"
                class="nav-item nav-item-sub active"
                onclick="showGroup('workstations', this); return false;">
@@ -35,9 +33,9 @@
         </nav>
         <div class="sidebar-footer">
             <span class="sidebar-user">admin</span>
+            <a href="{{ route('login') }}" class="nav-item btn-logout">Выход</a>
         </div>
     </aside>
-
     <main class="main">
         <header class="main-header">
             <div>
@@ -45,7 +43,6 @@
                 <div class="header-meta">Общий дашборд по оборудованию</div>
             </div>
         </header>
-
         <section class="page-content">
             <div class="cards">
                 <div class="card">
@@ -64,7 +61,6 @@
                     <div class="card-subtitle">Предупреждений: 4</div>
                 </div>
             </div>
-
             <div class="page-toolbar" style="margin-top: 20px;">
                 <div class="filters">
                     <input type="text" class="input" placeholder="Поиск по имени или домену">
@@ -82,7 +78,6 @@
                     </button>
                 </div>
             </div>
-            <!-- Рабочие станции -->
             <div id="workstations" class="device-group active">
                 <div class="group-header">
                     <div class="group-title">Рабочие станции</div>
@@ -125,7 +120,6 @@
                     </table>
                 </div>
             </div>
-            <!-- Сетевые устройства -->
             <div id="network" class="device-group">
                 <div class="group-header">
                     <div class="group-title">Сетевые устройства</div>
@@ -161,7 +155,6 @@
                     </table>
                 </div>
             </div>
-            <!-- Серверы -->
             <div id="servers" class="device-group">
                 <div class="group-header">
                     <div class="group-title">Серверы</div>
@@ -200,7 +193,6 @@
         </section>
     </main>
 </div>
-<!-- Модальное окно добавления -->
 <div id="addModal" class="modal">
     <div class="modal-overlay" onclick="closeModal()"></div>
     <div class="modal-content">
@@ -240,7 +232,6 @@
         </form>
     </div>
 </div>
-<!-- Модальное окно подробностей -->
 <div id="detailModal" class="modal">
     <div class="modal-overlay" onclick="closeModal()"></div>
     <div class="modal-content" style="max-width: 600px;">
@@ -297,11 +288,8 @@
 </style>
 <script>
     function showGroup(groupId, element) {
-        // Убираем активный класс у всех подгрупп
         document.querySelectorAll('.nav-item-sub').forEach(el => el.classList.remove('active'));
         document.querySelectorAll('.device-group').forEach(el => el.classList.remove('active'));
-
-        // Добавляем активный класс
         element.classList.add('active');
         document.getElementById(groupId).classList.add('active');
     }
@@ -313,7 +301,6 @@
 
     function openDetailModal(deviceName) {
         document.getElementById('detailTitle').textContent = deviceName;
-        // Имитация данных
         document.getElementById('detailId').textContent = 'DEV-' + Math.floor(Math.random()*1000);
         document.getElementById('detailIp').textContent = '192.168.1.' + Math.floor(Math.random()*255);
         document.getElementById('detailDomain').textContent = deviceName.toLowerCase().replace(/ /g, '.') + '.local';

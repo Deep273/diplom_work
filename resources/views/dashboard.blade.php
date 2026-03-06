@@ -23,13 +23,11 @@
             <a href="{{ route('login') }}" class="nav-item btn-logout">Выход</a>
         </div>
     </aside>
-
     <main class="main">
         <header class="main-header">
             <h1 class="page-title">Дашборд</h1>
             <div class="header-meta">Обновлено: сейчас</div>
         </header>
-
         <section class="page-content">
             <div class="cards">
                 <div class="card">
@@ -62,8 +60,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Графики -->
             <div class="charts-grid">
                 <div class="card">
                     <div class="card-title">Подключенные / отключенные устройства</div>
@@ -81,27 +77,6 @@
         </section>
     </main>
 </div>
-
-<style>
-    .charts-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 18px;
-        margin-top: 22px;
-    }
-
-    .chart-container {
-        position: relative;
-        height: 220px;
-        width: 100%;
-    }
-
-    .chart-container canvas {
-        max-height: 100% !important;
-        width: 100% !important;
-    }
-</style>
-
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const pieCtx = document.getElementById('pieChart').getContext('2d');
@@ -130,8 +105,6 @@
                 }
             }
         });
-
-        // График активности
         const activityCtx = document.getElementById('activityChart').getContext('2d');
         new Chart(activityCtx, {
             type: 'line',
