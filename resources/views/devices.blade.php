@@ -5,7 +5,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Устройства</title>
     <link rel="stylesheet" href="{{ asset('css/variables.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/devices.css') }}">
 </head>
 <body>
 <div class="layout">
@@ -231,13 +231,6 @@
         </div>
     </div>
 </div>
-<style>
-    .device-group { display: none; }
-    .device-group.active { display: block; }
-    .device-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-    .nav-item-sub { padding-left: 32px; font-size: 14px; }
-    .nav-item-section { font-weight: 600; border-left: 3px solid var(--primary); }
-</style>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script src="{{ asset('js/devices.js') }}"></script>

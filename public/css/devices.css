@@ -1,4 +1,5 @@
 @import url('./variables.css');
+@import url('./style.css');
 
 .layout {
     display: flex;
@@ -176,4 +177,24 @@
 .btn-primary:hover {
     background: linear-gradient(to right, #2563eb, #4f46e5);
     box-shadow: 0 8px 24px rgba(37,99,235,0.45);
+}
+
+ .device-group {
+     display: none;
+ }
+.device-group.active {
+    display: block;
+}
+.device-detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+.nav-item-sub {
+    padding-left: 32px;
+    font-size: 14px;
+}
+.nav-item-section {
+    font-weight: 600;
+    border-left: 3px solid var(--primary);
 }
