@@ -20,13 +20,7 @@ Route::get('/checks', function () {
 })->name('checks');
 
 Route::get('/dashboard', function () {
-
-    if (!session('admin_logged')) {
-        return redirect()->route('login');
-    }
-
     return view('dashboard');
-
 })->name('dashboard');
 
 Route::get('/devices', function () {

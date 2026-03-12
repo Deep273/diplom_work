@@ -5,6 +5,7 @@
     <title>Дашборд</title>
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <link rel="stylesheet" href="{{ asset('css/variables.css') }}">
+    <script src="{{ asset('js/auth.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -20,7 +21,7 @@
         </nav>
         <div class="sidebar-footer">
             <span class="sidebar-user">admin</span>
-            <a href="{{ route('login') }}" class="nav-item btn-logout">Выход</a>
+            <a href="#" onclick="logout()" class="nav-item btn-logout">Выход</a>
         </div>
     </aside>
     <main class="main">

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Проверки</title>
     <link rel="stylesheet" href="{{ asset('css/checks.css') }}">
+    <script src="{{ asset('js/auth.js') }}"></script>
 </head>
 <body>
 <div class="layout">

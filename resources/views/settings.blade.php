@@ -6,6 +6,7 @@
     <title>Настройки</title>
     <link rel="stylesheet" href="{{ asset('css/variables.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <script src="{{ asset('js/auth.js') }}"></script>
 </head>
 <body>
 <div class="layout">

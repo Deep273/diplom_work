@@ -6,6 +6,7 @@
     <title>Связь</title>
     <link rel="stylesheet" href="{{ asset('css/variables.css') }}">
     <link rel="stylesheet" href="{{ asset('css/connections.css') }}">
+    <script src="{{ asset('js/auth.js') }}"></script>
     <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
 </head>
 <body>
