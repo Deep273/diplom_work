@@ -39,7 +39,7 @@
                     </select>
                 </div>
                 <div>
-                    <button class="btn btn-primary" onclick="openCheckModal(null)">Новая проверка</button>
+                    <button class="btn btn-primary" onclick="openAddCheckModal()">Новая проверка</button>
                 </div>
             </div>
             <div class="cards">
@@ -74,59 +74,7 @@
                             <th></th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <tr>
-                            <td><strong>Ping</strong></td>
-                            <td>Проверка доступности по ICMP</td>
-                            <td>Одно устройство</td>
-                            <td class="muted">2 мин назад</td>
-                            <td><span class="status-pill status-ok">Успешно (12ms)</span></td>
-                            <td>
-                                <div class="btn-group">
-                                    <button class="btn btn-small btn-light" onclick="openCheckModal('ping')">Настроить</button>
-                                    <button class="btn btn-small btn-primary" onclick="runCheck('ping')">Запустить</button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>Проверка порта</strong></td>
-                            <td>Тест TCP порта (22,80,443)</td>
-                            <td>Одно устройство</td>
-                            <td class="muted">45 мин назад</td>
-                            <td><span class="status-pill status-warn">Таймаут (порт 22)</span></td>
-                            <td>
-                                <div class="btn-group">
-                                    <button class="btn btn-small btn-light" onclick="openCheckModal('port')">Настроить</button>
-                                    <button class="btn btn-small btn-primary" onclick="runCheck('port')">Запустить</button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>HTTP тест</strong></td>
-                            <td>Проверка HTTP/HTTPS сервисов</td>
-                            <td>Группа устройств</td>
-                            <td class="muted">1ч 20мин назад</td>
-                            <td><span class="status-pill status-bad">3/5 недоступно</span></td>
-                            <td>
-                                <div class="btn-group">
-                                    <button class="btn btn-small btn-light" onclick="openCheckModal('http')">Настроить</button>
-                                    <button class="btn btn-small btn-primary" onclick="runCheck('http')">Запустить</button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>Дисковое пространство</strong></td>
-                            <td>Мониторинг свободного места</td>
-                            <td>Серверы</td>
-                            <td class="muted">5 мин назад</td>
-                            <td><span class="status-pill status-ok">78% свободно</span></td>
-                            <td>
-                                <div class="btn-group">
-                                    <button class="btn btn-small btn-light" onclick="openCheckModal('disk')">Настроить</button>
-                                    <button class="btn btn-small btn-primary" onclick="runCheck('disk')">Запустить</button>
-                                </div>
-                            </td>
-                        </tr>
+                        <tbody id="checksTableBody">
                         </tbody>
                     </table>
                 </div>
@@ -143,39 +91,35 @@
         </div>
 
         <div class="check-settings">
-            <div class="form-field">
-                <span class="form-label">Целевые устройства</span>
-                <div class="tag-group">
-                    <span class="tag status-ok">Core Router 1</span>
-                    <span class="tag status-warn">Switch 7</span>
-                    <input type="text" class="input" placeholder="Добавить устройство...">
-                </div>
-            </div>
 
-            <div class="grid-2">
-                <div class="form-field">
-                    <span class="form-label">Таймаут (сек)</span>
-                    <input type="number" class="input" value="5">
-                </div>
-                <div class="form-field">
-                    <span class="form-label">Повторений</span>
-                    <input type="number" class="input" value="3">
-                </div>
+            <div class="form-field">
+                <span class="form-label">Название проверки</span>
+                <input id="checkName" type="text" class="input" placeholder="Название проверки">
             </div>
 
             <div class="form-field">
-                <span class="form-label">Дополнительные параметры</span>
-                <textarea class="input" rows="3" placeholder="--count=4 --verbose"></textarea>
+                <span class="form-label">Описание</span>
+                <input id="checkDescription" type="text" class="input" placeholder="Краткое описание проверки">
+            </div>
+
+            <div class="form-field">
+                <span class="form-label">Цель проверки</span>
+                <select id="checkTarget" class="input">
+                    <option value="Одно устройство">Одно устройство</option>
+                    <option value="Группа устройств">Группа устройств</option>
+                    <option value="Серверы">Серверы</option>
+                </select>
             </div>
         </div>
 
         <div class="modal-actions">
             <button class="btn btn-secondary" onclick="closeCheckModal()">Отмена</button>
-            <button class="btn btn-primary" onclick="saveCheckSettings()">Сохранить</button>
-            <button class="btn btn-danger" onclick="runCheckNow()" style="margin-left: auto;">Запустить сейчас</button>
+            <button class="btn btn-primary" onclick="addCheck()">Добавить</button>
         </div>
     </div>
 </div>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 <script src="{{ asset('js/checks.js') }}"></script>
 </body>
 </html>
