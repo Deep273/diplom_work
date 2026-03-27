@@ -30,12 +30,12 @@
         <section class="page-content">
             <div class="page-toolbar">
                 <div class="filters">
-                    <input type="text" class="input" placeholder="Поиск проверок">
-                    <select class="input">
-                        <option>Все статусы</option>
-                        <option>Успешно</option>
-                        <option>Предупреждение</option>
-                        <option>Ошибка</option>
+                    <input type="text" id="checkSearch" class="input" placeholder="Поиск проверок">
+                    <select id="checkStatusFilter" class="input">
+                        <option value="all">Все статусы</option>
+                        <option value="Успешно">Успешно</option>
+                        <option value="Предупреждение">Предупреждение</option>
+                        <option value="Ошибка">Ошибка</option>
                     </select>
                 </div>
                 <div>
@@ -46,15 +46,15 @@
                 <div class="card">
                     <div class="card-title">
                         Статистика проверок (24ч)
-                        <span class="status-pill status-ok" style="font-size: 12px;">127/128</span>
+                        <span class="status-pill status-ok" style="font-size: 12px;">0/0</span>
                     </div>
                     <div class="grid-2" style="margin-top: 14px;">
                         <div>
-                            <div class="card-value" style="font-size: 24px;">3</div>
+                            <div class="card-value" style="font-size: 24px;">0</div>
                             <div class="card-subtitle">Ошибки</div>
                         </div>
                         <div>
-                            <div class="card-value" style="font-size: 24px;">12</div>
+                            <div class="card-value" style="font-size: 24px;">0</div>
                             <div class="card-subtitle">Предупреждения</div>
                         </div>
                     </div>
@@ -108,6 +108,20 @@
                     <option value="Одно устройство">Одно устройство</option>
                     <option value="Группа устройств">Группа устройств</option>
                     <option value="Серверы">Серверы</option>
+                </select>
+            </div>
+
+            <div class="form-field" id="deviceField" style="display:none;">
+                <span class="form-label">Выберите устройство</span>
+                <div id="checkDeviceList" class="device-list"></div>
+            </div>
+
+            <div class="form-field" id="groupField" style="display:none;">
+                <span class="form-label">Выберите группу</span>
+                <select id="checkGroup" class="input">
+                    <option value="workstations">Рабочие станции</option>
+                    <option value="network">Сетевые устройства</option>
+                    <option value="servers">Серверы</option>
                 </select>
             </div>
         </div>
