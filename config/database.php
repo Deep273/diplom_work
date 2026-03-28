@@ -9,9 +9,9 @@ return [
     | Default Database Connection Name
     |--------------------------------------------------------------------------
     |
-    | Here you may specify which of the database connections below you wish
+    | Here you may specify which of the database connections.js below you wish
     | to use as your default connection for all database work. Of course
-    | you may use many connections at once using the Database library.
+    | you may use many connections.js at once using the Database library.
     |
     */
 
@@ -22,7 +22,7 @@ return [
     | Database Connections
     |--------------------------------------------------------------------------
     |
-    | Here are each of the database connections setup for your application.
+    | Here are each of the database connections.js setup for your application.
     | Of course, examples of configuring each database platform that is
     | supported by Laravel is shown below to make development simple.
     |
@@ -33,7 +33,7 @@ return [
     |
     */
 
-    'connections' => [
+    'connections.js' => [
 
         'sqlite' => [
             'driver' => 'sqlite',

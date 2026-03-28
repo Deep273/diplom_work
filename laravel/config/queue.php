@@ -28,7 +28,7 @@ return [
     |
     */
 
-    'connections' => [
+    'connections.js' => [
 
         'sync' => [
             'driver' => 'sync',

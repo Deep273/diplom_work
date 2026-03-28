@@ -35,11 +35,12 @@
         <section class="page-content">
             <div class="page-toolbar">
                 <div class="filters">
-                    <input type="text" class="input" placeholder="Поиск устройств">
-                    <select class="input">
-                        <option>Все типы связей</option>
-                        <option>Подчинённое</option>
-                        <option>Зависимость</option>
+                    <input type="text" class="input" id="searchInput" placeholder="Поиск устройств">
+                    <select class="input" id="typeFilter">
+                        <option value="">Все типы связей</option>
+                        <option value="Подчинённое">Подчинённое</option>
+                        <option value="Зависимость">Зависимость</option>
+                        <option value="Шлюз">Шлюз</option>
                     </select>
                 </div>
                 <div>
@@ -54,7 +55,10 @@
             <div class="card" style="margin-top: 18px;">
                 <div class="card-title">
                     Список связей
-                    <span style="font-size: 13px; color: var(--text-muted);">(42 связи)</span>
+                    <div style="font-size: 13px; color: var(--text-muted);">
+                        Связей: <span id="connectionsCount">0</span> |
+                        Устройств: <span id="devicesCount">0</span>
+                    </div>
                 </div>
                 <div class="table-wrapper">
                     <table class="table">
@@ -66,20 +70,7 @@
                             <th>Действия</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <tr>
-                            <td>Core Router 1</td>
-                            <td>Подчинённое</td>
-                            <td>Switch 7</td>
-                            <td><button class="btn btn-small btn-light">Удалить</button></td>
-                        </tr>
-                        <tr>
-                            <td>Switch 7</td>
-                            <td>Подчинённое</td>
-                            <td>Access Point 12</td>
-                            <td><button class="btn btn-small btn-light">Удалить</button></td>
-                        </tr>
-                        </tbody>
+                        <tbody></tbody>
                     </table>
                 </div>
             </div>
@@ -93,11 +84,7 @@
         <form class="form" onsubmit="saveConnection(event)">
             <label class="form-field">
                 <span class="form-label">Исходное устройство</span>
-                <select class="input" id="sourceDevice">
-                    <option>Core Router 1</option>
-                    <option>Switch 7</option>
-                    <option>DB-Server-01</option>
-                </select>
+                <select class="input" id="sourceDevice"></select>
             </label>
             <label class="form-field">
                 <span class="form-label">Тип связи</span>
@@ -109,11 +96,7 @@
             </label>
             <label class="form-field">
                 <span class="form-label">Целевое устройство</span>
-                <select class="input" id="targetDevice">
-                    <option>Switch 7</option>
-                    <option>Access Point 12</option>
-                    <option>DB-Server-01</option>
-                </select>
+                <select class="input" id="targetDevice"></select>
             </label>
             <div class="page-toolbar" style="margin-top: 14px;">
                 <button type="button" class="btn btn-secondary" onclick="closeConnectionModal()">Отмена</button>
@@ -122,6 +105,8 @@
         </form>
     </div>
 </div>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 <script src="{{ asset('js/connections.js') }}"></script>
 </body>
 </html>

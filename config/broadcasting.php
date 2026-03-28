@@ -9,7 +9,7 @@ return [
     |
     | This option controls the default broadcaster that will be used by the
     | framework when an event needs to be broadcast. You may set this to
-    | any of the connections defined in the "connections" array below.
+    | any of the connections.js defined in the "connections.js" array below.
     |
     | Supported: "pusher", "ably", "redis", "log", "null"
     |
@@ -22,13 +22,13 @@ return [
     | Broadcast Connections
     |--------------------------------------------------------------------------
     |
-    | Here you may define all of the broadcast connections that will be used
+    | Here you may define all of the broadcast connections.js that will be used
     | to broadcast events to other systems or over websockets. Samples of
     | each available type of connection are provided inside this array.
     |
     */
 
-    'connections' => [
+    'connections.js' => [
 
         'pusher' => [
             'driver' => 'pusher',
