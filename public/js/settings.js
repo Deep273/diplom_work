@@ -16,8 +16,9 @@ if (!window.firebaseAppInitialized) {
 }
 
 window.auth = firebase.auth();
-
 window.db = firebase.database();
+
+// ---------------------- Аккаунт ----------------------
 async function loadAccount(user) {
     const snapshot = await db.ref("admins/" + user.uid).get();
 
@@ -48,8 +49,6 @@ window.saveAccount = async () => {
     }
 
     try {
-        // 1. Обновляем email в Firebase Auth
-        // 1. Пытаемся обновить email
         try {
             await user.updateEmail(email);
             await user.sendEmailVerification();
@@ -79,7 +78,7 @@ window.saveAccount = async () => {
                 throw error;
             }
         }
-        // 2. Обновляем данные в базе
+        // Обновляем данные в базе
         await db.ref("admins/" + user.uid).update({
             name: name,
             email: email
@@ -102,6 +101,7 @@ window.saveAccount = async () => {
     }
 };
 
+// ---------------------- Пароль ----------------------
 window.changePassword = async () => {
     const user = firebase.auth().currentUser;
 
@@ -130,7 +130,7 @@ window.changePassword = async () => {
     }
 
     try {
-        // 🔐 переавторизация
+        //  переавторизация
         const credential = firebase.auth.EmailAuthProvider.credential(
             user.email,
             currentPassword
@@ -138,7 +138,7 @@ window.changePassword = async () => {
 
         await user.reauthenticateWithCredential(credential);
 
-        // 🔥 смена пароля
+        // смена пароля
         await user.updatePassword(newPassword);
 
         alert("Пароль успешно изменён");
@@ -160,18 +160,19 @@ window.changePassword = async () => {
         }
     }
 };
+
+// ---------------------- Auth ----------------------
 auth.onAuthStateChanged(user => {
     if (user) {
         loadAccount(user);
+        loadUsers();
         resetSessionTimer();
     } else {
         window.location.href = "login";
     }
 });
 
-
-
-
+// ---------------------- Сессия ----------------------
 let logoutTimer;
 
 function resetSessionTimer() {
@@ -188,11 +189,11 @@ function resetSessionTimer() {
     }, timeoutMs);
 }
 
-
 ["click", "mousemove", "keydown", "scroll"].forEach(event => {
     document.addEventListener(event, resetSessionTimer);
 });
 
+// ---------------------- Модалка ----------------------
 window.addUser = () => {
     const modal = document.getElementById("addUserModal");
 
@@ -217,6 +218,7 @@ document.addEventListener("click", (e) => {
     }
 });
 
+// ---------------------- Пользователи ----------------------
 window.createUser = async () => {
     const name = document.getElementById("newUserName").value.trim();
     const email = document.getElementById("newUserEmail").value.trim();
@@ -233,11 +235,11 @@ window.createUser = async () => {
     }
 
     try {
-        // ⚠️ создаём пользователя
+        // создаём пользователя
         const result = await auth.createUserWithEmailAndPassword(email, password);
         const newUser = result.user;
 
-        // ⚠️ сохраняем доп. данные в базе
+        // сохраняем доп. данные в базе
         await db.ref("admins/" + newUser.uid).set({
             name: name,
             email: email,
@@ -265,3 +267,30 @@ window.createUser = async () => {
         }
     }
 };
+
+async function loadUsers() {
+    const tbody = document.querySelector(".table tbody");
+
+    try {
+        const snapshot = await db.ref("admins").get();
+        const data = snapshot.val();
+
+        tbody.innerHTML = "";
+
+        if (!data) return;
+
+        Object.entries(data).forEach(([uid, user]) => {
+            const tr = document.createElement("tr");
+
+            tr.innerHTML = `
+                <td>${user.name || ""}</td>
+                <td>${user.email || ""}</td>
+            `;
+
+            tbody.appendChild(tr);
+        });
+
+    } catch (error) {
+        console.error("Ошибка загрузки пользователей:", error);
+    }
+}

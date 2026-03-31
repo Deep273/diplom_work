@@ -66,7 +66,7 @@ window.addDeviceRow = (groupId, deviceData) => {
         <td style="display:none;">${deviceData.id}</td>
         <td>
             <button class="btn btn-small btn-light" onclick="openDetailModal('${groupId}', '${deviceData.id}')">Подробнее</button>
-            <button class="btn btn-small btn-danger" onclick="deleteDevice('${groupId}', '${deviceData.id}', this)">Удалить</button>
+            <button class="btn btn-small btn-danger" onclick="archiveDevice('${groupId}', '${deviceData.id}', this)">Архивировать</button>
             <button class="btn btn-small btn-warning" onclick="editDevice('${groupId}', '${deviceData.id}')">Редактировать</button>
         </td>
     `;
@@ -132,18 +132,35 @@ window.saveDevice = async (event) => {
     }
 };
 
-// ---------------------- Удаление устройства ----------------------
-window.deleteDevice = async (groupId, deviceId, btn) => {
-    if (!confirm('Вы уверены, что хотите удалить устройство?')) return;
+// ---------------------- Архивирование устройства ----------------------
+window.archiveDevice = async (groupId, deviceId, btn) => {
+    if (!confirm('Вы уверены, что хотите архивировать устройство?')) return;
+
     try {
-        await db.ref(`${groupId}/${deviceId}`).remove();
+        const deviceRef = db.ref(`${groupId}/${deviceId}`);
+        const snapshot = await deviceRef.once('value');
+        const deviceData = snapshot.val();
+
+        if (!deviceData) return;
+
+        // 1. Сохраняем в архив
+        await db.ref(`archive/${groupId}/${deviceId}`).set({
+            ...deviceData,
+            archivedAt: Date.now()
+        });
+
+        // 2. Удаляем из активных
+        await deviceRef.remove();
+
+        // 3. UI
         btn.closest('tr').remove();
         delete devicesCache[groupId][deviceId];
         updateCounters();
-        alert('Устройство удалено!');
+
+        alert('Устройство архивировано!');
     } catch (err) {
         console.error(err);
-        alert('Ошибка при удалении устройства');
+        alert('Ошибка при архивировании устройства');
     }
 };
 

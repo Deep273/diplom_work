@@ -33,7 +33,7 @@
             <div class="cards">
                 <div class="card">
                     <div class="card-title">Количество устройств</div>
-                    <div class="card-value">128</div>
+                    <div class="card-value">0</div>
                     <div class="card-subtitle">Всего устройств в системе</div>
                     <div style="margin-top: 14px;">
                         <a href="{{ route('devices') }}" class="btn btn-small btn-light">Подробнее</a>
@@ -42,7 +42,7 @@
                 <div class="card">
                     <div class="card-title">Ошибки</div>
                     <div class="card-value">
-                        <span class="status-pill status-warn">12 за 24 часа</span>
+                        <span class="status-pill status-warn">0 за 24 часа</span>
                     </div>
                     <div class="card-subtitle">Критические и предупреждения</div>
                     <div style="margin-top: 14px;">
@@ -52,8 +52,8 @@
                 <div class="card">
                     <div class="card-title">Подключенные / отключенные</div>
                     <div class="card-value">
-                        <span class="status-pill status-ok">96 онлайн</span>
-                        <span class="status-pill status-bad">32 офлайн</span>
+                        <span class="status-pill status-ok">0 онлайн</span>
+                        <span class="status-pill status-bad">0 офлайн</span>
                     </div>
                     <div class="card-subtitle">Текущий статус устройств</div>
                     <div style="margin-top: 14px;">
@@ -78,6 +78,8 @@
         </section>
     </main>
 </div>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script src="{{ asset('js/dashboard.js') }}"></script>
 </body>
 </html>
