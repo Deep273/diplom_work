@@ -179,6 +179,7 @@ body {
     padding: 18px 20px 20px;
     border: 1px solid rgba(31,41,55,0.95);
     box-shadow: var(--shadow-soft);
+    margin: 10px;
 }
 
 .card-title {
@@ -203,6 +204,7 @@ body {
 .card-subtitle {
     font-size: 14px;
     color: var(--text-muted);
+    margin: 10px 0px 10px;
 }
 
 /* Status */
@@ -599,3 +601,4 @@ body {
 .modal-overlay {
     animation: modalFadeIn 0.2s ease-out;
 }
+

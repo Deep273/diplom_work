@@ -12,41 +12,26 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-document.getElementById('loginForm').addEventListener('submit', async function(e) {
+const auth = firebase.auth();
+
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const login = document.getElementById('login').value;
+    const email = document.getElementById('login').value;
     const password = document.getElementById('password').value;
 
-    const loginKey = login.replace(/\./g, '_');
-
     try {
+        await auth.signInWithEmailAndPassword(email, password);
 
-        const snapshot = await db.ref('admins/' + loginKey + '/password').get();
-        console.log('snapshot.exists():', snapshot.exists());
-        console.log('snapshot.val():', snapshot.val());
-
-        if (!snapshot.exists()) {
-            document.getElementById('loginError').textContent = 'Пользователь не найден';
-            return;
-        }
-
-        const storedPassword = snapshot.val(); // <- здесь уже строка, пароль из базы
-
-        if (password !== storedPassword) {    // <- сравниваем напрямую
-            document.getElementById('loginError').textContent = 'Неверный пароль';
-            return;
-        }
-
-        // Сохраняем авторизацию
-        localStorage.setItem('admin_logged', 'true');
-        localStorage.setItem('admin_login', login);
-
-        // Переходим на дашборд
         window.location.href = 'dashboard';
 
-    } catch (err) {
-        console.error(err);
-        document.getElementById('loginError').textContent = 'Ошибка авторизации';
+    } catch (error) {
+        console.error(error);
+        document.getElementById('loginError').textContent = 'Неверный email или пароль';
     }
 });
+function logout() {
+    auth.signOut().then(() => {
+        window.location.href = 'login';
+    });
+}

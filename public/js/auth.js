@@ -1,9 +1,9 @@
-if (localStorage.getItem('admin_logged') !== 'true') {
-    window.location.href = 'login';
-}
+window.auth = firebase.auth();
 
-function logout(){
-    localStorage.removeItem('admin_logged');
-    localStorage.removeItem('admin_login');
-    window.location.href = 'login';
-}
+auth.onAuthStateChanged(user => {
+    if (!user) {
+        window.location.href = 'login';
+    } else {
+        console.log("LOGGED IN:", user.email);
+    }
+});

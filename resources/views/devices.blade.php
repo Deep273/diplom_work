@@ -146,8 +146,6 @@
         </section>
     </main>
 </div>
-
-<!-- Модалки -->
 <div id="addModal" class="modal">
     <div class="modal-overlay" onclick="closeModal()"></div>
     <div class="modal-content">
@@ -199,16 +197,7 @@
             <h3 id="detailTitle">Подробности устройства</h3>
             <button class="modal-close" onclick="closeModal()">×</button>
         </div>
-        <div class="device-detail-grid">
-            <div class="form-field"><span class="form-label">ID устройства</span><span id="detailId" class="detail-value">-</span></div>
-            <div class="form-field"><span class="form-label">IP адрес</span><span id="detailIp" class="detail-value">-</span></div>
-            <div class="form-field"><span class="form-label">Доменное имя</span><span id="detailDomain" class="detail-value">-</span></div>
-            <div class="form-field"><span class="form-label">Модель</span><span id="detailModel" class="detail-value">-</span></div>
-            <div class="form-field"><span class="form-label">Локация</span><span id="detailLocation" class="detail-value">-</span></div>
-            <div class="form-field"><span class="form-label">Статус</span><span id="detailStatus" class="detail-value">-</span></div>
-            <div class="form-field"><span class="form-label">Последний онлайн</span><span id="detailLastOnline" class="detail-value">-</span></div>
-            <div class="form-field"><span class="form-label">Связи</span><span id="detailConnections" class="detail-value">0 подчинённых</span></div>
-        </div>
+        <div class="device-detail-grid" id="deviceDetails"></div>
         <div class="modal-actions">
             <a href="{{ route('connections') }}" class="btn btn-secondary">Управление связями</a>
             <button class="btn btn-primary" onclick="closeModal()">Закрыть</button>

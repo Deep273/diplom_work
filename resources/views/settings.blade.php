@@ -5,8 +5,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Настройки</title>
     <link rel="stylesheet" href="{{ asset('css/variables.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    <script src="{{ asset('js/auth.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('css/settings.css') }}">
 </head>
 <body>
 <div class="layout">
@@ -36,12 +35,32 @@
                     <form class="form" id="accountForm">
                         <label class="form-field">
                             <span class="form-label">Имя</span>
-                            <input type="text" class="input" id="userName" value="Администратор">
+                            <input type="text" class="input" id="userName">
                         </label>
                         <label class="form-field">
                             <span class="form-label">Email</span>
-                            <input type="email" class="input" id="userEmail" value="admin@example.com">
+                            <input type="email" class="input" id="userEmail">
                         </label>
+                        <div class="card-subtitle" style="margin-top:15px;">Смена пароля</div>
+
+                        <label class="form-field">
+                            <span class="form-label">Текущий пароль</span>
+                            <input type="password" class="input" id="currentPassword">
+                        </label>
+
+                        <label class="form-field">
+                            <span class="form-label">Новый пароль</span>
+                            <input type="password" class="input" id="newPassword">
+                        </label>
+
+                        <label class="form-field">
+                            <span class="form-label">Подтвердите пароль</span>
+                            <input type="password" class="input" id="confirmPassword">
+                        </label>
+
+                        <button class="btn btn-primary" type="button" onclick="changePassword()">
+                            Сменить пароль
+                        </button>
                         <label class="form-field">
                             <span class="form-label">Язык интерфейса</span>
                             <select class="input" id="languageSelect">
@@ -56,15 +75,8 @@
                     <div class="card-title">Учетки и авторизация</div>
                     <div class="form" style="margin-bottom: 14px;">
                         <label class="form-field">
-                            <span class="form-label">Режим авторизации</span>
-                            <select class="input">
-                                <option>Локальная (без регистрации)</option>
-                                <option>Внешняя система</option>
-                            </select>
-                        </label>
-                        <label class="form-field">
                             <span class="form-label">Таймаут сессии (мин)</span>
-                            <input type="number" class="input" value="30">
+                            <input type="number" class="input" id="sessionTimeout" value="30">
                         </label>
                     </div>
 
@@ -74,27 +86,44 @@
                             <thead>
                             <tr>
                                 <th>Логин</th>
-                                <th>Роль</th>
+                                <th>Email</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>admin</td>
-                                <td>Администратор</td>
-                            </tr>
-                            <tr>
-                                <td>viewer</td>
-                                <td>Просмотр</td>
-                            </tr>
                             </tbody>
                         </table>
                     </div>
-                    <button class="btn btn-small btn-secondary" style="margin-top: 8px;" onclick="addUser()">Добавить учетку</button>
+                    <button type="button" class="btn btn-small btn-secondary" style="margin-top: 8px;" onclick="addUser()">
+                        Добавить учетку
+                    </button>
+                    <div id="addUserModal" class="modal hidden">
+                        <div class="modal-content">
+                            <h3>Добавить учетную запись</h3>
+
+                            <label>Имя</label>
+                            <input type="text" id="newUserName" class="input">
+
+                            <label>Email</label>
+                            <input type="email" id="newUserEmail" class="input">
+
+                            <label>Пароль</label>
+                            <input type="password" id="newUserPassword" class="input">
+
+                            <div class="modal-actions">
+                                <button class="btn btn-secondary" onclick="closeModal()">Отмена</button>
+                                <button class="btn btn-primary" onclick="createUser()">Создать</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
     </main>
 </div>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 <script src="{{ asset('js/settings.js') }}"></script>
+<script src="{{ asset('js/auth.js') }}"></script>
 </body>
 </html>
