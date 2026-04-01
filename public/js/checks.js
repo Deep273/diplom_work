@@ -41,6 +41,19 @@ function getStatusClass(result) {
     }
 }
 
+function setModalTitle(mode) {
+    const title = document.getElementById("checkModalTitle");
+
+    if (mode === "create") {
+        title.setAttribute("data-i18n", "checks.modal.title.create");
+    } else {
+        title.setAttribute("data-i18n", "checks.modal.title.setting");
+    }
+
+    applyTranslations(localStorage.getItem('language') || 'ru');
+}
+
+
 // ---------------------- Работа с таблицей ----------------------
 function addCheckRow(check) {
     const tbody = document.getElementById("checksTableBody");
@@ -55,11 +68,14 @@ function addCheckRow(check) {
         <td><span class="status-pill ${getStatusClass(check.result)}">${check.result || "Не запускалась"}</span></td>
         <td>
             <div class="btn-group">
-                <button class="btn btn-small btn-light" onclick="openCheckModal('${check.id}')">Настроить</button>
-                <button class="btn btn-small btn-primary" onclick="runCheck('${check.id}')">Запустить</button>
+                <button class="btn btn-small btn-light" data-i18n="checks.edit"
+                onclick="openCheckModal('${check.id}')">Настроить</button>
+                <button class="btn btn-small btn-primary" data-i18n="checks.run"
+                onclick="runCheck('${check.id}')">Запустить</button>
             </div>
         </td>
     `;
+    applyTranslations(localStorage.getItem('language') || 'ru');
 
     tbody.appendChild(tr);
 }
@@ -89,16 +105,17 @@ function populateDevices() {
     const target = document.getElementById("checkTarget").value;
     container.innerHTML = "";
 
-    if (target === "Одно устройство" || target === "Серверы") {
+    if (target === "single" || target === "servers") {
         const select = document.createElement("select");
         select.id = "checkDevice";
 
         const placeholder = document.createElement("option");
         placeholder.value = "";
-        placeholder.textContent = "Выберите устройство";
+        placeholder.textContent = window.translations[localStorage.getItem('language') || 'ru']['checks.modal.selectDevice'];
+
         select.appendChild(placeholder);
 
-        let groupsToShow = target === "Одно устройство" ? ['workstations', 'network'] : ['servers'];
+        let groupsToShow = target === "single" ? ['workstations', 'network'] : ['servers'];
 
         groupsToShow.forEach(groupName => {
             Object.values(devicesCache[groupName] || {}).forEach(device => {
@@ -112,7 +129,7 @@ function populateDevices() {
         container.appendChild(select);
     }
 
-    if (target === "Группа устройств") {
+    if (target === "group") {
         const devices = [
             ...Object.values(devicesCache['workstations'] || {}),
             ...Object.values(devicesCache['network'] || {})
@@ -147,19 +164,19 @@ function updateTargetFields() {
     }
 
 
-    if (["Одно устройство", "Серверы", "Группа устройств"].includes(target)) {
+    if (["single", "servers", "group"].includes(target)) {
         deviceField.style.display = "block";
         populateDevices();
 
         if (editingCheck) {
             const selected = checksCache[editingCheck]?.selectedDevice;
 
-            if (target === "Группа устройств" && Array.isArray(selected)) {
+            if (target === "group" && Array.isArray(selected)) {
                 const checkboxes = document.querySelectorAll("input[name='devices']");
                 checkboxes.forEach(cb => { cb.checked = selected.includes(cb.value); });
             }
 
-            if ((target === "Одно устройство" || target === "Серверы") && selected) {
+            if ((target === "single" || target === "servers") && selected) {
                 const select = document.getElementById("checkDevice");
                 if (select) select.value = selected;
             }
@@ -174,7 +191,7 @@ window.openAddCheckModal = async () => {
 
     const modal = document.getElementById("checkModal");
     modal.classList.add("active");
-    document.getElementById("checkModalTitle").textContent = "Добавить проверку";
+    setModalTitle(formMode)
 
     document.getElementById("checkName").value = "";
     document.getElementById("checkDescription").value = "";
@@ -191,7 +208,7 @@ window.openCheckModal = async (id) => {
 
     const modal = document.getElementById("checkModal");
     modal.classList.add("active");
-    document.getElementById("checkModalTitle").textContent = "Настройка проверки";
+    setModalTitle(formMode)
 
     document.getElementById("checkName").value = check.name;
     document.getElementById("checkDescription").value = check.description;
@@ -200,7 +217,7 @@ window.openCheckModal = async (id) => {
     await loadDevicesForChecks();
     populateDevices();
 
-    if (check.target === "Одно устройство" || check.target === "Серверы") {
+    if (check.target === "single" || check.target === "servers") {
         document.getElementById("checkDevice").value = check.selectedDevice;
     }
 
@@ -218,7 +235,7 @@ window.addCheck = async () => {
     const target = document.getElementById("checkTarget").value;
 
     let selectedDevice = null;
-    if (target === "Группа устройств") {
+    if (target === "group") {
         selectedDevice = Array.from(document.querySelectorAll("input[name='devices']:checked"))
             .map(cb => cb.value);
     } else {
@@ -386,6 +403,7 @@ function toggleAdvanced(show) {
     });
 }
 
+
 // ---------------------- Привязка событий ----------------------
 document.addEventListener("DOMContentLoaded", () => {
     const checkTarget = document.getElementById("checkTarget");
@@ -396,6 +414,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const statusFilter = document.getElementById("checkStatusFilter");
     if (statusFilter) statusFilter.addEventListener("change", filterChecks);
+
+    const lang = localStorage.getItem('language') || 'ru';
+    applyTranslations(lang);
 });
 
 // ---------------------- Инициализация ----------------------

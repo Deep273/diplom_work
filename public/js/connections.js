@@ -15,19 +15,19 @@ const db = firebase.database();
 // ---------------------- Rules ----------------------
 const connectionRules = {
     server: {
-        "Подчинённое": ["workstation"],
-        "Зависимость": ["workstation"],
-        "Шлюз": ["workstation", "network"]
+        subordinate: ["workstation"],
+        dependency: ["workstation"],
+        gateway: ["workstation", "network"]
     },
     workstation: {
-        "Подчинённое": ["server"],
-        "Зависимость": ["server"],
-        "Шлюз": ["server", "network"]
+        subordinate: ["server"],
+        dependency: ["server"],
+        gateway: ["server", "network"]
     },
     network: {
-        "Подчинённое": ["server", "workstation"],
-        "Зависимость": ["server", "workstation"],
-        "Шлюз": ["server", "workstation", "network"]
+        subordinate: ["server", "workstation"],
+        dependency: ["server", "workstation"],
+        gateway: ["server", "workstation", "network"]
     }
 };
 
@@ -103,21 +103,16 @@ function filterConnections() {
 
     rows.forEach(row => {
         const source = row.children[0].textContent.toLowerCase();
-        const type = row.children[1].textContent.toLowerCase();
         const target = row.children[2].textContent.toLowerCase();
 
         let visible = true;
 
-        //  поиск
         if (search) {
-            visible =
-                source.includes(search) ||
-                target.includes(search);
+            visible = source.includes(search) || target.includes(search);
         }
 
-        // фильтр по типу
         if (typeFilter) {
-            visible = visible && (type === typeFilter.toLowerCase());
+            visible = visible && (row.dataset.type === typeFilter);
         }
 
         row.style.display = visible ? "" : "none";
@@ -147,19 +142,22 @@ function addConnectionRow(conn) {
 
     const tr = document.createElement("tr");
 
+    tr.dataset.type = conn.type;
     tr.innerHTML = `
         <td>${conn.sourceName}</td>
-        <td>${conn.type}</td>
+        <td>${translateConnectionType(conn.type)}</td>
         <td>${conn.targetName}</td>
         <td>
             <button class="btn btn-small btn-light" onclick="deleteConnection('${conn.id}')">
-                Удалить
+                 ${getText('modal.delete')}
             </button>
         </td>
     `;
+    applyTranslations(localStorage.getItem('language') || 'ru');
 
     tbody.appendChild(tr);
 }
+
 
 // ---------------------- Сохранение и валидация связей ----------------------
 window.saveConnection = async (e) => {
@@ -274,7 +272,7 @@ function drawNetwork() {
             edges.push({
                 from: conn.sourceId,
                 to: conn.targetId,
-                label: conn.type,
+                label: translateConnectionType(conn.type),
                 arrows: "to"
             });
         });
@@ -345,6 +343,24 @@ function updateDevicesCount() {
     }
 }
 
+// ---------------------- Смена языка ----------------------
+function getText(key) {
+    const lang = localStorage.getItem('language') || 'ru';
+    return window.translations?.[lang]?.[key] || key;
+}
+
+function translateConnectionType(type) {
+    const map = {
+        subordinate: 'connections.type.subordinate',
+        dependency: 'connections.type.dependency',
+        gateway: 'connections.type.gateway',
+    };
+
+    const key = map[type];
+    return key ? getText(key) : type;
+}
+
+
 // ---------------------- Действия ----------------------
 window.deleteConnection = async (id) => {
     await db.ref("connections/" + id).remove();
@@ -381,3 +397,4 @@ document.getElementById("searchInput")
 
 document.getElementById("typeFilter")
     .addEventListener("change", filterConnections);
+

@@ -56,20 +56,27 @@ window.addDeviceRow = (groupId, deviceData) => {
     const tbody = document.querySelector(`#${groupId} tbody`);
     if (!tbody) return;
 
+    const statusText = translateStatus(deviceData.status);
+    console.log(deviceData.status, statusText);
     const tr = document.createElement('tr');
     tr.innerHTML = `
         <td><strong>${deviceData.name}</strong></td>
         <td>${deviceData.ip}<br><span class="muted">${deviceData.domain || ''}</span></td>
-        <td><span class="status-pill status-ok">${deviceData.status || 'Онлайн'}</span></td>
+        <td>
+           <span class="status-pill status-ok" data-status="${deviceData.status}">
+           ${statusText}
+           </span>
+        </td>
         <td class="muted">${deviceData.lastPing ? new Date(deviceData.lastPing).toLocaleTimeString() : '-'}</td>
         <td class="muted">${deviceData.location || '-'}</td>
         <td style="display:none;">${deviceData.id}</td>
         <td>
-            <button class="btn btn-small btn-light" onclick="openDetailModal('${groupId}', '${deviceData.id}')">Подробнее</button>
-            <button class="btn btn-small btn-danger" onclick="archiveDevice('${groupId}', '${deviceData.id}', this)">Архивировать</button>
-            <button class="btn btn-small btn-warning" onclick="editDevice('${groupId}', '${deviceData.id}')">Редактировать</button>
+            <button class="btn btn-small btn-light" data-i18n="devices.detail" onclick="openDetailModal('${groupId}', '${deviceData.id}')">Подробнее</button>
+            <button class="btn btn-small btn-danger" data-i18n="devices.archive" onclick="archiveDevice('${groupId}', '${deviceData.id}', this)">Архивировать</button>
+            <button class="btn btn-small btn-warning" data-i18n="devices.edit" onclick="editDevice('${groupId}', '${deviceData.id}')">Редактировать</button>
         </td>
     `;
+    applyTranslations(localStorage.getItem('language') || 'ru');
     tbody.appendChild(tr);
 };
 
@@ -77,17 +84,21 @@ window.openDetailModal = (groupId, deviceId) => {
     const device = devicesCache[groupId][deviceId];
     if (!device) return;
 
-    const setText = (id, value) => document.getElementById(id).textContent = value || '-';
+    document.getElementById('detailTitle').textContent = device.name;
 
-    setText('detailTitle', device.name);
-    setText('detailId', device.id);
-    setText('detailIp', device.ip);
-    setText('detailDomain', device.domain);
-    setText('detailModel', device.model || '-');
-    setText('detailLocation', device.location);
-    setText('detailStatus', device.status);
-    setText('detailLastOnline', device.lastPing ? new Date(device.lastPing).toLocaleString() : '-');
-    setText('detailConnections', device.connections || '0 подчинённых');
+    const container = document.getElementById('deviceDetails');
+
+    container.innerHTML = `
+        <div><strong>ID:</strong> ${device.id}</div>
+        <div><strong>IP:</strong> ${device.ip}</div>
+        <div><strong>Домен:</strong> ${device.domain || '-'}</div>
+        <div><strong>Модель:</strong> ${device.model || '-'}</div>
+        <div><strong>Локация:</strong> ${device.location || '-'}</div>
+        <div><strong>Статус:</strong> ${device.status || '-'}</div>
+        <div><strong>Последний онлайн:</strong> ${
+        device.lastPing ? new Date(device.lastPing).toLocaleString() : '-'
+    }</div>
+    `;
 
     document.getElementById('detailModal').classList.add('active');
     document.body.style.overflow = 'hidden';
@@ -113,7 +124,7 @@ window.saveDevice = async (event) => {
     const deviceData = {
         id: newDeviceRef.key,
         name, ip, domain, location, model,
-        status: 'Онлайн',
+        status: 'online',
         lastPing: new Date().toISOString()
     };
 
@@ -232,10 +243,10 @@ window.updateCounters = () => {
 
         let online = 0, offline = 0, warn = 0;
         rows.forEach(row => {
-            const status = row.querySelector('td:nth-child(3) .status-pill')?.textContent.trim();
-            if (status === 'Онлайн') online++;
-            else if (status === 'Офлайн') offline++;
-            else if (status === 'Предупреждение') warn++;
+            const status = row.querySelector('.status-pill')?.dataset.status;
+            if (status === 'online') online++;
+            else if (status === 'offline') offline++;
+            else if (status === 'warn') warn++;
         });
 
         const groupCountEl = document.querySelector(`#${groupId} .group-count`);
@@ -284,10 +295,12 @@ const filterDevices = () => {
         tbody.querySelectorAll('tr').forEach(row => {
             const name = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
             const domain = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
-            const status = row.querySelector('td:nth-child(3) .status-pill')?.textContent.trim();
+            const statusEl = row.querySelector('.status-pill');
+
+            const status = statusEl?.dataset.status;
 
             const matchesText = name.includes(textFilter) || domain.includes(textFilter);
-            const matchesStatus = (statusFilter === 'Все статусы' || status === statusFilter);
+            const matchesStatus = (statusFilter === 'all' || status === statusFilter);
 
             row.style.display = (matchesText && matchesStatus) ? '' : 'none';
         });
@@ -358,5 +371,26 @@ window.exportTable = () => {
     XLSX.writeFile(workbook, `${groupNames[groupId]}.xlsx`);
 
 };
+
+// ---------------------- Переводы ----------------------
+const statusTranslations = {
+    ru: {
+        online: 'Онлайн',
+        offline: 'Офлайн',
+        warn: 'Предупреждение'
+    },
+    en: {
+        online: 'Online',
+        offline: 'Offline',
+        warn: 'Warning'
+    }
+};
+
+function translateStatus(statusKey) {
+    const lang = localStorage.getItem('language') || 'ru';
+
+    return statusTranslations[lang]?.[statusKey] || statusKey;
+}
+
 // ---------------------- Инициализация ----------------------
 loadDevices();

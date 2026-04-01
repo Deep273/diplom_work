@@ -294,3 +294,36 @@ async function loadUsers() {
         console.error("Ошибка загрузки пользователей:", error);
     }
 }
+
+// ---------------------- Смена языка ----------------------
+
+document.addEventListener('DOMContentLoaded', () => {
+    const select = document.getElementById('languageSelect');
+
+    const savedLang = localStorage.getItem('language') || 'ru';
+    select.value = savedLang;
+
+    setLanguage(savedLang);
+
+    select.addEventListener('change', function () {
+        setLanguage(this.value);
+    });
+});
+
+function setLanguage(lang) {
+    const elements = document.querySelectorAll('[data-i18n]');
+
+    elements.forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        const translation = window.translations?.[lang]?.[key];
+
+        if (translation) {
+            el.textContent = translation;
+        }
+    });
+
+    localStorage.setItem('language', lang);
+}
+
+const el = document.querySelector('[data-i18n="settings.auth"]');
+

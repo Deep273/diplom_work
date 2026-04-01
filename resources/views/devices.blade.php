@@ -6,53 +6,51 @@
     <title>Устройства</title>
     <link rel="stylesheet" href="{{ asset('css/variables.css') }}">
     <link rel="stylesheet" href="{{ asset('css/devices.css') }}">
-    <script src="{{ asset('js/auth.js') }}"></script>
 </head>
 <body>
 <div class="layout">
     <aside class="sidebar">
         <div class="sidebar-logo">DM</div>
         <nav class="sidebar-nav">
-            <a href="{{ route('dashboard') }}" class="nav-item">Главная</a>
-            <a href="{{ route('devices') }}" class="nav-item nav-item-section active">Устройства</a>
-            <a href="#workstations" class="nav-item nav-item-sub active"
+            <a href="{{ route('dashboard') }}" class="nav-item" data-i18n="nav.home">Главная</a>
+            <a href="{{ route('devices') }}" class="nav-item" data-i18n="nav.devices">Устройства</a>
+            <a href="#workstations" class="nav-item nav-item-sub active" data-i18n="groupDevices.workstations"
                onclick="showGroup('workstations', this); return false;">Рабочие станции</a>
-            <a href="#network" class="nav-item nav-item-sub"
+            <a href="#network" class="nav-item nav-item-sub" data-i18n="groupDevices.network"
                onclick="showGroup('network', this); return false;">Сетевые устройства</a>
-            <a href="#servers" class="nav-item nav-item-sub"
+            <a href="#servers" class="nav-item nav-item-sub" data-i18n="groupDevices.servers"
                onclick="showGroup('servers', this); return false;">Серверы</a>
-            <a href="{{ route('checks') }}" class="nav-item">Проверки</a>
-            <a href="{{ route('settings') }}" class="nav-item">Настройки</a>
-            <a href="{{ route('connections') }}" class="nav-item">Связь</a>
+            <a href="{{ route('checks') }}" class="nav-item" data-i18n="nav.checks">Проверки</a>
+            <a href="{{ route('settings') }}" class="nav-item nav-item-section active" data-i18n="nav.settings">Настройки</a>
+            <a href="{{ route('connections') }}" class="nav-item" data-i18n="nav.connections">Связь</a>
         </nav>
         <div class="sidebar-footer">
             <span class="sidebar-user">admin</span>
-            <a href="{{ route('login') }}" class="nav-item btn-logout">Выход</a>
+            <a href="{{ route('login') }}" class="nav-item btn-logout" data-i18n="btn.logout">Выход</a>
         </div>
     </aside>
 
     <main class="main">
         <header class="main-header">
             <div>
-                <h1 class="page-title">Устройства</h1>
-                <div class="header-meta">Общий дашборд по оборудованию</div>
+                <h1 class="page-title" data-i18n="nav.devices">Устройства</h1>
+                <div class="header-meta" data-i18n="devices.subtitle">Общий дашборд по оборудованию</div>
             </div>
         </header>
-
         <section class="page-content">
             <div class="cards">
                 <div class="card">
-                    <div class="card-title">Рабочие станции</div>
+                    <div class="card-title" data-i18n="groupDevices.workstations">Рабочие станции</div>
                     <div class="card-value">0</div>
                     <div class="card-subtitle">Онлайн: 0 · Офлайн: 0</div>
                 </div>
                 <div class="card">
-                    <div class="card-title">Сетевые устройства</div>
+                    <div class="card-title" data-i18n="groupDevices.network">Сетевые устройства</div>
                     <div class="card-value">0</div>
                     <div class="card-subtitle">Критичных нет</div>
                 </div>
                 <div class="card">
-                    <div class="card-title">Серверы</div>
+                    <div class="card-title" data-i18n="groupDevices.servers">Серверы</div>
                     <div class="card-value">0</div>
                     <div class="card-subtitle">Предупреждений: 0</div>
                 </div>
@@ -60,36 +58,36 @@
 
             <div class="page-toolbar" style="margin-top: 20px;">
                 <div class="filters">
-                    <input type="text" class="input" placeholder="Поиск по имени или домену">
+                    <input type="text" class="input" data-i18n-placeholder="devices.search" placeholder="Поиск по имени или домену">
                     <select class="input">
-                        <option>Все статусы</option>
-                        <option>Онлайн</option>
-                        <option>Офлайн</option>
-                        <option>Предупреждение</option>
+                        <option value="all" data-i18n="status.all">Все статусы</option>
+                        <option value="online" data-i18n="status.online">Онлайн</option>
+                        <option value="offline" data-i18n="status.offline">Офлайн</option>
+                        <option value="warn" data-i18n="status.warn">Предупреждение</option>
                     </select>
                 </div>
                 <div style="display: flex; gap: 10px;">
-                    <button class="btn btn-secondary" onclick="exportTable()">Экспорт таблицы</button>
-                    <button class="btn btn-primary" onclick="openAddModal()">Добавить устройство</button>
+                    <button class="btn btn-secondary" data-i18n="table.export" onclick="exportTable()">Экспорт таблицы</button>
+                    <button class="btn btn-primary" data-i18n="devices.add" onclick="openAddModal()">Добавить устройство</button>
                 </div>
             </div>
 
             <!-- Группы устройств -->
             <div id="workstations" class="device-group active">
                 <div class="group-header">
-                    <div class="group-title">Рабочие станции</div>
+                    <div class="group-title" data-i18n="groupDevices.workstations">Рабочие станции</div>
                     <div class="group-count">0 устройств</div>
                 </div>
                 <div class="table-wrapper">
                     <table class="table">
                         <thead>
                         <tr>
-                            <th>Наименование</th>
-                            <th>IP / Домен</th>
-                            <th>Статус</th>
-                            <th>Последний ping</th>
-                            <th>Локация</th>
-                            <th style="display:none;">ID</th>
+                            <th data-i18n="devices.table.name">Наименование</th>
+                            <th data-i18n="devices.table.ip">IP / Домен</th>
+                            <th data-i18n="devices.table.status">Статус</th>
+                            <th data-i18n="devices.table.ping">Последний ping</th>
+                            <th data-i18n="devices.table.location">Локация</th>
+                            <th data-i18n="devices.table.id" style="display:none;">ID</th>
                             <th></th>
                         </tr>
                         </thead>
@@ -100,7 +98,7 @@
 
             <div id="network" class="device-group">
                 <div class="group-header">
-                    <div class="group-title">Сетевые устройства</div>
+                    <div class="group-title" data-i18n="groupDevices.network">Сетевые устройства</div>
                     <div class="group-count">0 устройств</div>
                 </div>
                 <div class="table-wrapper">
@@ -123,7 +121,7 @@
 
             <div id="servers" class="device-group">
                 <div class="group-header">
-                    <div class="group-title">Серверы</div>
+                    <div class="group-title"  data-i18n="groupDevices.servers">Серверы</div>
                     <div class="group-count">0 устройств</div>
                 </div>
                 <div class="table-wrapper">
@@ -157,7 +155,7 @@
             <label class="form-field">
                 <span class="form-label">Тип устройства</span>
                 <select class="input" id="deviceType">
-                    <option>Рабочая станция</option>
+                    <option >Рабочая станция</option>
                     <option>Сетевое устройство</option>
                     <option>Сервер</option>
                 </select>
@@ -207,7 +205,10 @@
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="{{ asset('js/translations.js') }}"></script>
 <script src="{{ asset('js/devices.js') }}"></script>
+<script src="{{ asset('js/auth.js') }}"></script>
 </body>
 </html>
