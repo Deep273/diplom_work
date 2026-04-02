@@ -12,8 +12,8 @@
         <nav class="sidebar-nav">
             <a href="{{ route('dashboard') }}" class="nav-item" data-i18n="nav.home">Главная</a>
             <a href="{{ route('devices') }}" class="nav-item" data-i18n="nav.devices">Устройства</a>
-            <a href="{{ route('checks') }}" class="nav-item" data-i18n="nav.checks">Проверки</a>
-            <a href="{{ route('settings') }}" class="nav-item nav-item-section active" data-i18n="nav.settings">Настройки</a>
+            <a href="{{ route('checks') }}" class="nav-item nav-item-section active" data-i18n="nav.checks">Проверки</a>
+            <a href="{{ route('settings') }}" class="nav-item" data-i18n="nav.settings">Настройки</a>
             <a href="{{ route('connections') }}" class="nav-item" data-i18n="nav.connections">Связь</a>
         </nav>
         <div class="sidebar-footer">

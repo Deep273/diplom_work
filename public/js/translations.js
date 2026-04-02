@@ -7,8 +7,18 @@ window.translations = {
         'nav.settings': 'Настройки',
         'nav.connections': 'Связь',
 
+        'dashboard.title': "Дашборд",
+        'dashboard.subtitle': "Обновлено: сейчас",
+        'dashboard.devices': "Подключенные / отключенные",
+        'dashboard.count': "Количество устройств",
         'devices.subtitle': "Общий дашборд по оборудованию",
         'devices.add': "Добавить устройство",
+        'dashboard.description.errors': "Критические и предупреждения",
+        'dashboard.description.count': "Всего устройств в системе",
+        'dashboard.description.status': "Текущий статус устройств",
+        "dashboard.devices.title": "Подключенные / отключенные устройства",
+        "dashboard.devices.activity": "Активность устройств (за 24ч)",
+
         "status.all": "Все статусы",
         "status.online": "Онлайн",
         "status.offline": "Офлайн",
@@ -24,6 +34,14 @@ window.translations = {
         'devices.edit': "Редактировать",
         'devices.archive': "Архивировать",
         'devices.detail': "Подробнее",
+        "devices.workstation": "Рабочее устройство",
+        "devices.network": "Сетевое устройство",
+        'devices.ip': 'IP адрес',
+        'devices.domain': 'Доменное имя',
+        'devices.model': 'Модель',
+        "devices.location": 'Дата-центр 1',
+        'devices.save': "Сохранить изменения",
+        'devices.detail.location': 'Локация',
 
         'checks.title': "Проверки",
         'checks.subtitle': 'Запуск скриптов для тестирования оборудования',
@@ -54,6 +72,7 @@ window.translations = {
         'checks.modal.title.create': 'Добавить проверку',
         'checks.modal.selectDevice': 'Выберите устройство',
 
+
         'checks.modal.namePlaceholder': 'Название проверки',
         'checks.modal.descriptionPlaceholder': 'Краткое описание проверки',
 
@@ -83,6 +102,8 @@ window.translations = {
         'connections.modal.sourceLabel': 'Исходное устройство',
         'connections.modal.targetLabel': 'Целевое устройство',
         'connections.create': 'Создать связь',
+        "devices.server": "Сервер",
+        'devices.edit.title': "Редактировать устройство",
 
         'settings.title': 'Настройки',
         'settings.subtitle': 'Учётные записи и авторизация',
@@ -112,6 +133,38 @@ window.translations = {
         'modal.password': 'Пароль',
         'modal.delete': 'Удалить',
         'table.login': 'Логин',
+        "modal.connection": 'Управление связями',
+
+        message: {
+            createUser: "Пользователь создан",
+            sessionExpired: "Сессия истекла",
+            emailInUse: "Этот email уже используется",
+            invalidEmail: "Некорректный email",
+            weakPassword: "Слишком слабый пароль",
+            invalidPassword: "Неверный текущий пароль",
+            default: "Ошибка",
+            required: "Заполните все поля",
+            passwordLength: "Пароль должен быть минимум 6 символов",
+            editPassword: "Пароль успешно изменён",
+            passwordsWatch: "Пароли не совпадают",
+            invalidAuth:"Вы не авторизованы",
+            save: "Сохранено",
+            confirmPassword: "Нужно подтвердить пароль",
+            loginAccount: "Перезайдите в аккаунт для изменения email",
+            invalidExportTable: "Нет таблицы для экспорта!",
+            invalidExportGroup: "Нет активной группы для экспорта!",
+            invalidUpdateDevice: "Ошибка при обновлении устройства!",
+            updateDevice: "Устройство успешно обновлено!",
+            invalidCreateDevice: "Ошибка при добавлении устройства!",
+            createDevice: "Устройство успешно добавлено!",
+            invalidArchiveDevice: "Ошибка при архивировании устройства!",
+            archiveDevice: "Устройство архивировано!",
+            invalidNameOrIP: "Введите хотя бы имя и IP устройства!",
+            wantArchiveDevice: "Вы уверены, что хотите архивировать устройство?",
+            enterNameCheck: "Введите название проверки",
+            selectedDevices: "Выберите устройства",
+            connectionExist: "Такая связь уже существует",
+        }
     },
 
     en: {
@@ -120,6 +173,16 @@ window.translations = {
         'nav.checks': 'Checks',
         'nav.settings': 'Settings',
         'nav.connections': 'Connections',
+
+        'dashboard.title': "Dashboard",
+        'dashboard.subtitle': "Updated: Now",
+        'dashboard.devices': "Connected / Disconnected",
+        'dashboard.count': "Count devices",
+        'dashboard.description.errors': "Critical and warnings",
+        'dashboard.description.count': "Total devices in the system",
+        'dashboard.description.status': "Current device status",
+        "dashboard.devices.title": "Connected / disconnected devices",
+        "dashboard.devices.activity": "Device activity (in 24 hours)",
 
         "devices.subtitle": "General equipment dashboard",
         'devices.add': "Add device",
@@ -138,6 +201,17 @@ window.translations = {
         'devices.edit': "Edit",
         'devices.archive': 'Archive',
         'devices.detail': 'Details',
+        "devices.count": 'devices',
+        "devices.workstation": "Workstation",
+        "devices.network": "Network device",
+        "devices.server": "Server",
+        'devices.ip': 'IP Address',
+        'devices.domain': 'Domain Name',
+        'devices.model': 'Model',
+        "devices.location": 'Data center 1',
+        'devices.save': "Save changes",
+        'devices.edit.title': "Edit device",
+
 
         'checks.title': "Checks",
         'checks.subtitle': 'Run scripts to test equipment',
@@ -228,8 +302,40 @@ window.translations = {
         'modal.create': 'Create',
         'modal.password': 'Password',
         'modal.delete': 'Delete',
+        "modal.connection": 'Management connections',
 
         'table.login': 'Login',
+
+        message: {
+            createUser: "The user has been created",
+            sessionExpired: "The session has expired",
+            invalidPassword: "Invalid current password",
+            emailInUse: "This email is already in use",
+            invalidEmail: "Invalid email",
+            weakPassword: "Password is too weak",
+            default: "Error",
+            required: "Fill in all fields",
+            passwordLength: "Password must be at least 6 characters",
+            editPassword: "Password successfully changed",
+            passwordsWatch: "Passwords don't match",
+            invalidAuth: "You are not logged in",
+            save: "Save",
+            confirmPassword: "You need to confirm your password",
+            loginAccount: "Log in to your account to change your email",
+            invalidExportTable: "There is no table to export!",
+            invalidExportGroup: "There is no active export group!",
+            invalidUpdateDevice: "Error updating the device!",
+            updateDevice: "The device has been successfully updated!",
+            invalidCreateDevice: "The device has been added successfully!",
+            createDevice: "Error when adding a device!",
+            invalidArchiveDevice: "Error when archiving the device!",
+            archiveDevice: "The device is archived!",
+            invalidNameOrIP: "At least enter the device's name and IP address!",
+            wantArchiveDevice: "Are you sure you want to archive the device?",
+            enterNameCheck: "Enter the name of the check",
+            selectedDevices: "Select devices",
+            connectionExist: "Such a connection already exists",
+        }
     }
 };
 
@@ -259,3 +365,23 @@ function applyTranslations(lang) {
         }
     });
 }
+
+function translateAlert(key, params = {}) {
+    const lang = localStorage.getItem('language') || 'ru';
+
+    const keys = key.split('.');
+    let text = window.translations?.[lang];
+
+    for (let k of keys) {
+        text = text?.[k];
+    }
+
+    if (!text) return key;
+
+    Object.keys(params).forEach(p => {
+        text = text.replace(`{${p}}`, params[p]);
+    });
+
+    return text;
+}
+

@@ -23,6 +23,37 @@ const devicesCache = {
     servers: {}
 };
 
+const checkTranslations = {
+    ru: {
+        targets: {
+            single: 'Одно устройство',
+            group: 'Группа устройств',
+            servers: 'Серверы'
+        },
+        results: {
+            "Успешно": "Успешно",
+            "Предупреждение": "Предупреждение",
+            "Ошибка": "Ошибка",
+            "В процессе": "В процессе",
+            "Не запускалась": "Не запускалась"
+        }
+    },
+    en: {
+        targets: {
+            single: 'Single device',
+            group: 'Group of devices',
+            servers: 'Servers'
+        },
+        results: {
+            "Успешно": "Success",
+            "Предупреждение": "Warning",
+            "Ошибка": "Error",
+            "В процессе": "In progress",
+            "Не запускалась": "Not started"
+        }
+    }
+};
+
 // ---------------------- Вспомогательные функции ----------------------
 function formatDateDisplay(isoString) {
     if (!isoString || isoString === "-") return "-";
@@ -53,6 +84,15 @@ function setModalTitle(mode) {
     applyTranslations(localStorage.getItem('language') || 'ru');
 }
 
+function translateCheckTarget(target) {
+    const lang = localStorage.getItem('language') || 'ru';
+    return checkTranslations[lang]?.targets[target] || target;
+}
+
+function translateCheckResult(result) {
+    const lang = localStorage.getItem('language') || 'ru';
+    return checkTranslations[lang]?.results[result] || result;
+}
 
 // ---------------------- Работа с таблицей ----------------------
 function addCheckRow(check) {
@@ -63,9 +103,9 @@ function addCheckRow(check) {
     tr.innerHTML = `
         <td><strong>${check.name}</strong></td>
         <td>${check.description}</td>
-        <td>${check.target}</td>
+        <td>${translateCheckTarget(check.target)}</td>
         <td class="muted">${lastRunDisplay || "-"}</td>
-        <td><span class="status-pill ${getStatusClass(check.result)}">${check.result || "Не запускалась"}</span></td>
+        <td><span class="status-pill ${getStatusClass(check.result)}">${translateCheckResult(check.result || "Не запускалась")}</span></td>
         <td>
             <div class="btn-group">
                 <button class="btn btn-small btn-light" data-i18n="checks.edit"
@@ -75,9 +115,8 @@ function addCheckRow(check) {
             </div>
         </td>
     `;
-    applyTranslations(localStorage.getItem('language') || 'ru');
-
     tbody.appendChild(tr);
+    applyTranslations(localStorage.getItem('language') || 'ru');
 }
 
 function updateCheckRowStatus(id, result, statusClass, lastRunDisplay = null) {
@@ -89,7 +128,7 @@ function updateCheckRowStatus(id, result, statusClass, lastRunDisplay = null) {
         if (btn) {
             // Обновляем статус
             const statusCell = row.cells[4];
-            statusCell.innerHTML = `<span class="status-pill ${statusClass}">${result}</span>`;
+            statusCell.innerHTML = `<span class="status-pill ${statusClass}">${translateCheckResult(result)}</span>`;
 
             // Обновляем последний запуск
             if (lastRunDisplay) {
@@ -195,7 +234,7 @@ window.openAddCheckModal = async () => {
 
     document.getElementById("checkName").value = "";
     document.getElementById("checkDescription").value = "";
-    document.getElementById("checkTarget").value = "Одно устройство";
+    document.getElementById("checkTarget").value = "single";
     document.getElementById("checkDeviceList").innerHTML = "";
     document.getElementById("deviceField").style.display = "none";
     toggleAdvanced(false);
@@ -244,7 +283,7 @@ window.addCheck = async () => {
     }
 
     if (!name) {
-        alert("Введите название проверки");
+        alert(translateAlert("message.enterNameCheck"));
         return;
     }
 
@@ -282,7 +321,7 @@ window.addCheck = async () => {
         tbody.innerHTML = "";
         Object.values(checksCache).forEach(addCheckRow);
     }
-
+    applyTranslations(localStorage.getItem('language') || 'ru');
     closeCheckModal();
 };
 

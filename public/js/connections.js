@@ -171,7 +171,7 @@ window.saveConnection = async (e) => {
     const target = devicesCache[targetId];
 
     if (!source || !target) {
-        alert("Выберите устройства");
+        alert(translateAlert("message.selectDevices"));
         return;
     }
 
@@ -192,7 +192,7 @@ window.saveConnection = async (e) => {
     });
 
     if (exists) {
-        alert("Такая связь уже существует");
+        alert(translateAlert("message.connectionExist"));
         return;
     }
 
@@ -200,21 +200,6 @@ window.saveConnection = async (e) => {
 
     //Проверка логики
     const allowedTargets = connectionRules[source.type]?.[type];
-
-    if (!allowedTargets) {
-        alert("Неверный тип связи");
-        return;
-    }
-
-    if (!allowedTargets.includes(target.type)) {
-        alert("Эта связь запрещена для выбранного типа");
-        return;
-    }
-
-    if (sourceId === targetId) {
-        alert("Нельзя подключить устройство к самому себе");
-        return;
-    }
 
     const ref = db.ref("connections").push();
 

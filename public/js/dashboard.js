@@ -37,6 +37,18 @@ document.addEventListener('DOMContentLoaded', async () => {
 // ---------------------- Статистика ----------------------
 async function updateDashboardStats() {
     const groups = ['workstations', 'network', 'servers'];
+    const dashboardTranslations = {
+        ru: {
+            online: 'онлайн',
+            offline: 'офлайн',
+            last24: 'за 24 часа'
+        },
+        en: {
+            online: 'online',
+            offline: 'offline',
+            last24: 'last 24 hours'
+        }
+    };
 
     let total = 0;
     let online = 0;
@@ -50,11 +62,14 @@ async function updateDashboardStats() {
             const device = child.val();
             total++;
 
-            if (device.status === 'Онлайн') online++;
-            else if (device.status === 'Офлайн') offline++;
-            else if (device.status === 'Предупреждение') warnings++;
+            if (device.status === 'online') online++;
+            else if (device.status === 'offline') offline++;
+            else if (device.status === 'war') warnings++;
         });
     }
+
+    const lang = localStorage.getItem('language') || 'ru';
+    const t = dashboardTranslations[lang];
 
     // карточка "Количество устройств"
     document.querySelectorAll('.card-value')[0].textContent = total;
@@ -62,13 +77,13 @@ async function updateDashboardStats() {
     // карточка "Ошибки"
     const errorCard = document.querySelectorAll('.card-value')[1];
     errorCard.innerHTML = `
-        <span class="status-pill status-warn">${warnings} за 24 часа</span>
+        <span class="status-pill status-warn">${warnings} ${t.last24}</span>
     `;
 
     // карточка "Онлайн / Офлайн"
     document.querySelectorAll('.card-value')[2].innerHTML = `
-        <span class="status-pill status-ok">${online} онлайн</span>
-        <span class="status-pill status-bad">${offline} офлайн</span>
+        <span class="status-pill status-ok">${online} ${t.online}</span>
+        <span class="status-pill status-bad">${offline} ${t.offline}</span>
     `;
 
     return { total, online, offline, warnings };
@@ -101,11 +116,25 @@ let activityChart;
 
 function initCharts(online, offline, activityData) {
     const pieCtx = document.getElementById('pieChart').getContext('2d');
+    const chartTranslations = {
+        ru: {
+            online: 'Онлайн',
+            offline: 'Офлайн',
+            activity: 'Активность'
+        },
+        en: {
+            online: 'Online',
+            offline: 'Offline',
+            activity: 'Activity'
+        }
+    };
+    const lang = localStorage.getItem('language') || 'ru';
+    const t = chartTranslations[lang];
 
     pieChart = new Chart(pieCtx, {
         type: 'pie',
         data: {
-            labels: ['Онлайн', 'Офлайн'],
+            labels: [t.online, t.offline],
             datasets: [{
                 data: [online, offline],
                 backgroundColor: ['#000160', '#111111'],
@@ -122,7 +151,7 @@ function initCharts(online, offline, activityData) {
         data: {
             labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
             datasets: [{
-                label: 'Активность',
+                label: t.activity,
                 data: activityData,
                 borderColor: '#3b82f6',
                 tension: 0.4,

@@ -13,7 +13,7 @@
         <div class="sidebar-logo">DM</div>
         <nav class="sidebar-nav">
             <a href="{{ route('dashboard') }}" class="nav-item" data-i18n="nav.home">Главная</a>
-            <a href="{{ route('devices') }}" class="nav-item" data-i18n="nav.devices">Устройства</a>
+            <a href="{{ route('devices') }}" class="nav-item nav-item-section active" data-i18n="nav.devices">Устройства</a>
             <a href="#workstations" class="nav-item nav-item-sub active" data-i18n="groupDevices.workstations"
                onclick="showGroup('workstations', this); return false;">Рабочие станции</a>
             <a href="#network" class="nav-item nav-item-sub" data-i18n="groupDevices.network"
@@ -21,7 +21,7 @@
             <a href="#servers" class="nav-item nav-item-sub" data-i18n="groupDevices.servers"
                onclick="showGroup('servers', this); return false;">Серверы</a>
             <a href="{{ route('checks') }}" class="nav-item" data-i18n="nav.checks">Проверки</a>
-            <a href="{{ route('settings') }}" class="nav-item nav-item-section active" data-i18n="nav.settings">Настройки</a>
+            <a href="{{ route('settings') }}" class="nav-item" data-i18n="nav.settings">Настройки</a>
             <a href="{{ route('connections') }}" class="nav-item" data-i18n="nav.connections">Связь</a>
         </nav>
         <div class="sidebar-footer">
@@ -105,12 +105,12 @@
                     <table class="table">
                         <thead>
                         <tr>
-                            <th>Наименование</th>
-                            <th>IP / Домен</th>
-                            <th>Статус</th>
-                            <th>Последний ping</th>
-                            <th>Локация</th>
-                            <th style="display:none;">ID</th>
+                            <th data-i18n="devices.table.name">Наименование</th>
+                            <th data-i18n="devices.table.ip">IP / Домен</th>
+                            <th data-i18n="devices.table.status">Статус</th>
+                            <th data-i18n="devices.table.ping">Последний ping</th>
+                            <th data-i18n="devices.table.location">Локация</th>
+                            <th data-i18n="devices.table.id" style="display:none;">ID</th>
                             <th></th>
                         </tr>
                         </thead>
@@ -128,12 +128,12 @@
                     <table class="table">
                         <thead>
                         <tr>
-                            <th>Наименование</th>
-                            <th>IP / Домен</th>
-                            <th>Статус</th>
-                            <th>Последний ping</th>
-                            <th>Локация</th>
-                            <th style="display:none;">ID</th>
+                            <th data-i18n="devices.table.name">Наименование</th>
+                            <th data-i18n="devices.table.ip">IP / Домен</th>
+                            <th data-i18n="devices.table.status">Статус</th>
+                            <th data-i18n="devices.table.ping">Последний ping</th>
+                            <th data-i18n="devices.table.location">Локация</th>
+                            <th data-i18n="devices.table.id" style="display:none;">ID</th>
                             <th></th>
                         </tr>
                         </thead>
@@ -148,41 +148,41 @@
     <div class="modal-overlay" onclick="closeModal()"></div>
     <div class="modal-content">
         <div class="modal-header">
-            <h3>Добавить устройство</h3>
+            <h3 class="modal-title" data-i18n="devices.add">Добавить устройство</h3>
             <button class="modal-close" onclick="closeModal()">×</button>
         </div>
         <form id="addDeviceForm" class="form">
             <label class="form-field">
                 <span class="form-label">Тип устройства</span>
                 <select class="input" id="deviceType">
-                    <option >Рабочая станция</option>
-                    <option>Сетевое устройство</option>
-                    <option>Сервер</option>
+                    <option value="workstations" data-i18n="devices.workstation">Рабочая станция</option>
+                    <option value="network" data-i18n="devices.network">Сетевое устройство</option>
+                    <option value="servers" data-i18n="devices.server">Сервер</option>
                 </select>
             </label>
             <label class="form-field">
-                <span class="form-label">Наименование</span>
+                <span class="form-label" data-i18n="devices.table.name">Наименование</span>
                 <input type="text" class="input" id="deviceName" placeholder="Core Router 1">
             </label>
             <label class="form-field">
-                <span class="form-label">IP адрес</span>
+                <span class="form-label" data-i18n="devices.ip">IP адрес</span>
                 <input type="text" class="input" id="deviceIp" placeholder="192.168.1.1">
             </label>
             <label class="form-field">
-                <span class="form-label">Доменное имя</span>
+                <span class="form-label" data-i18n="devices.domain">Доменное имя</span>
                 <input type="text" class="input" id="deviceDomain" placeholder="device.example.com">
             </label>
             <label class="form-field">
-                <span class="form-label">Модель</span>
+                <span class="form-label" data-i18n="devices.model">Модель</span>
                 <input type="text" class="input" id="deviceModel" placeholder="Cisco XYZ">
             </label>
             <label class="form-field">
-                <span class="form-label">Локация</span>
-                <input type="text" class="input" id="deviceLocation" placeholder="Дата-центр 1">
+                <span class="form-label" data-i18n="devices.table.location">Локация</span>
+                <input type="text" class="input" id="deviceLocation" data-i18n-placeholder="devices.location" placeholder="Дата-центр 1">
             </label>
             <div class="modal-actions">
-                <button type="button" class="btn btn-secondary" onclick="closeModal()">Отмена</button>
-                <button type="submit" class="btn btn-primary">Добавить устройство</button>
+                <button type="button" class="btn btn-secondary" data-i18n="modal.cancel" onclick="closeModal()">Отмена</button>
+                <button type="submit" class="btn btn-primary" data-i18n="devices.add">Добавить устройство</button>
             </div>
         </form>
     </div>
@@ -197,8 +197,8 @@
         </div>
         <div class="device-detail-grid" id="deviceDetails"></div>
         <div class="modal-actions">
-            <a href="{{ route('connections') }}" class="btn btn-secondary">Управление связями</a>
-            <button class="btn btn-primary" onclick="closeModal()">Закрыть</button>
+            <a href="{{ route('connections') }}" class="btn btn-secondary" data-i18n="modal.connection">Управление связями</a>
+            <button class="btn btn-primary" data-i18n="modal.cancel" onclick="closeModal()">Закрыть</button>
         </div>
     </div>
 </div>

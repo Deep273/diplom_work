@@ -12,63 +12,63 @@
     <aside class="sidebar">
         <div class="sidebar-logo">DM</div>
         <nav class="sidebar-nav">
-            <a href="{{ route('dashboard') }}" class="nav-item nav-item-section active">Главная</a>
-            <a href="{{ route('devices') }}" class="nav-item">Устройства</a>
-            <a href="{{ route('checks') }}" class="nav-item">Проверки</a>
-            <a href="{{ route('settings') }}" class="nav-item">Настройки</a>
-            <a href="{{ route('connections') }}" class="nav-item">Связь</a>
+            <a href="{{ route('dashboard') }}" class="nav-item" data-i18n="nav.home">Главная</a>
+            <a href="{{ route('devices') }}" class="nav-item" data-i18n="nav.devices">Устройства</a>
+            <a href="{{ route('checks') }}" class="nav-item nav-item-section active" data-i18n="nav.checks">Проверки</a>
+            <a href="{{ route('settings') }}" class="nav-item" data-i18n="nav.settings">Настройки</a>
+            <a href="{{ route('connections') }}" class="nav-item" data-i18n="nav.connections">Связь</a>
         </nav>
         <div class="sidebar-footer">
             <span class="sidebar-user">admin</span>
-            <a href="#" onclick="logout()" class="nav-item btn-logout">Выход</a>
+            <a href="{{ route('login') }}" class="nav-item btn-logout" data-i18n="btn.logout">Выход</a>
         </div>
     </aside>
     <main class="main">
         <header class="main-header">
-            <h1 class="page-title">Дашборд</h1>
-            <div class="header-meta">Обновлено: сейчас</div>
+            <h1 class="page-title" data-i18n="dashboard.title">Дашборд</h1>
+            <div class="header-meta" data-i18n="dashboard.subtitle">Обновлено: сейчас</div>
         </header>
         <section class="page-content">
             <div class="cards">
                 <div class="card">
-                    <div class="card-title">Количество устройств</div>
+                    <div class="card-title" data-i18n="dashboard.count">Количество устройств</div>
                     <div class="card-value">0</div>
-                    <div class="card-subtitle">Всего устройств в системе</div>
+                    <div class="card-subtitle" data-i18n="dashboard.description.count">Всего устройств в системе</div>
                     <div style="margin-top: 14px;">
-                        <a href="{{ route('devices') }}" class="btn btn-small btn-light">Подробнее</a>
+                        <a href="{{ route('devices') }}" class="btn btn-small btn-light" data-i18n="devices.detail">Подробнее</a>
                     </div>
                 </div>
                 <div class="card">
-                    <div class="card-title">Ошибки</div>
+                    <div class="card-title" data-i18n="checks.stats.errors">Ошибки</div>
                     <div class="card-value">
                         <span class="status-pill status-warn">0 за 24 часа</span>
                     </div>
-                    <div class="card-subtitle">Критические и предупреждения</div>
+                    <div class="card-subtitle" data-i18n="dashboard.description.errors">Критические и предупреждения</div>
                     <div style="margin-top: 14px;">
-                        <a href="{{ route('checks') }}" class="btn btn-small btn-light">Подробнее</a>
+                        <a href="{{ route('checks') }}" class="btn btn-small btn-light" data-i18n="devices.detail">Подробнее</a>
                     </div>
                 </div>
                 <div class="card">
-                    <div class="card-title">Подключенные / отключенные</div>
+                    <div class="card-title" data-i18n="dashboard.devices">Подключенные / отключенные</div>
                     <div class="card-value">
                         <span class="status-pill status-ok">0 онлайн</span>
                         <span class="status-pill status-bad">0 офлайн</span>
                     </div>
-                    <div class="card-subtitle">Текущий статус устройств</div>
+                    <div class="card-subtitle"  data-i18n="dashboard.description.status">Текущий статус устройств</div>
                     <div style="margin-top: 14px;">
-                        <a href="{{ route('devices') }}" class="btn btn-small btn-light">Подробнее</a>
+                        <a href="{{ route('devices') }}" class="btn btn-small btn-light" data-i18n="devices.detail">Подробнее</a>
                     </div>
                 </div>
             </div>
             <div class="charts-grid">
                 <div class="card">
-                    <div class="card-title">Подключенные / отключенные устройства</div>
+                    <div class="card-title" data-i18n="dashboard.devices.title">Подключенные / отключенные устройства</div>
                     <div class="chart-container">
                         <canvas id="pieChart"></canvas>
                     </div>
                 </div>
                 <div class="card">
-                    <div class="card-title">Активность устройств (за 24ч)</div>
+                    <div class="card-title" data-i18n="dashboard.devices.activity">Активность устройств (за 24ч)</div>
                     <div class="chart-container">
                         <canvas id="activityChart"></canvas>
                     </div>
@@ -80,6 +80,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="{{ asset('js/translations.js') }}"></script>
 <script src="{{ asset('js/dashboard.js') }}"></script>
 <script src="{{ asset('js/auth.js') }}"></script>
 </body>

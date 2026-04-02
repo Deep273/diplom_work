@@ -21,11 +21,16 @@ window.openAddModal = () => {
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
 
-    // очищаем форму
     form.reset();
     form.onsubmit = saveDevice;
-    // меняем текст кнопки
-    document.querySelector('#addDeviceForm button[type="submit"]').textContent = 'Добавить устройство';
+
+    const title = document.querySelector('#addModal .modal-title');
+    title.setAttribute('data-i18n', 'devices.add');
+    applyTranslations(localStorage.getItem('language') || 'ru');
+    const btn = document.querySelector('#addDeviceForm button[type="submit"]');
+    btn.setAttribute('data-i18n', 'devices.add');
+
+    applyTranslations(localStorage.getItem('language') || 'ru');
 };
 
 window.closeModal = () => {
@@ -57,8 +62,8 @@ window.addDeviceRow = (groupId, deviceData) => {
     if (!tbody) return;
 
     const statusText = translateStatus(deviceData.status);
-    console.log(deviceData.status, statusText);
     const tr = document.createElement('tr');
+    tr.setAttribute('data-id', deviceData.id);
     tr.innerHTML = `
         <td><strong>${deviceData.name}</strong></td>
         <td>${deviceData.ip}<br><span class="muted">${deviceData.domain || ''}</span></td>
@@ -76,8 +81,8 @@ window.addDeviceRow = (groupId, deviceData) => {
             <button class="btn btn-small btn-warning" data-i18n="devices.edit" onclick="editDevice('${groupId}', '${deviceData.id}')">Редактировать</button>
         </td>
     `;
-    applyTranslations(localStorage.getItem('language') || 'ru');
     tbody.appendChild(tr);
+    applyTranslations(localStorage.getItem('language') || 'ru');
 };
 
 window.openDetailModal = (groupId, deviceId) => {
@@ -91,14 +96,15 @@ window.openDetailModal = (groupId, deviceId) => {
     container.innerHTML = `
         <div><strong>ID:</strong> ${device.id}</div>
         <div><strong>IP:</strong> ${device.ip}</div>
-        <div><strong>Домен:</strong> ${device.domain || '-'}</div>
-        <div><strong>Модель:</strong> ${device.model || '-'}</div>
-        <div><strong>Локация:</strong> ${device.location || '-'}</div>
-        <div><strong>Статус:</strong> ${device.status || '-'}</div>
-        <div><strong>Последний онлайн:</strong> ${
+        <div><strong><span data-i18n="devices.domain"></span>:</strong> ${device.domain || '-'}</div>
+        <div><strong><span data-i18n="devices.model"></span>:</strong> ${device.model || '-'}</div>
+        <div><strong><span data-i18n="devices.table.location"></span>:</strong> ${device.location || '-'}</div>
+        <div><strong><span data-i18n="devices.table.status"></span>:</strong> ${device.status || '-'}</div>
+        <div><strong><span data-i18n="devices.table.ping"></span>:</strong> ${
         device.lastPing ? new Date(device.lastPing).toLocaleString() : '-'
-    }</div>
+        }</div>
     `;
+    applyTranslations(localStorage.getItem('language') || 'ru');
 
     document.getElementById('detailModal').classList.add('active');
     document.body.style.overflow = 'hidden';
@@ -115,10 +121,9 @@ window.saveDevice = async (event) => {
     const location = document.getElementById('deviceLocation').value.trim();
     const model = document.getElementById('deviceModel')?.value?.trim() || '';
 
-    if (!name || !ip) return alert('Введите хотя бы имя и IP устройства!');
+    if (!name || !ip) return alert(translateAlert("message.invalidNameOrIP"));
 
-    const groupKey = type === 'Рабочая станция' ? 'workstations' :
-        type === 'Сетевое устройство' ? 'network' : 'servers';
+    const groupKey = document.getElementById('deviceType').value;
 
     const newDeviceRef = db.ref(groupKey).push();
     const deviceData = {
@@ -131,21 +136,22 @@ window.saveDevice = async (event) => {
     try {
         await newDeviceRef.set(deviceData);
         addDeviceRow(groupKey, deviceData);
+        applyTranslations(localStorage.getItem('language') || 'ru');
         updateCounters();
         closeModal();
         ['deviceName','deviceIp','deviceDomain','deviceLocation','deviceModel'].forEach(id => {
             if(document.getElementById(id)) document.getElementById(id).value = '';
         });
-        alert('Устройство успешно добавлено в Firebase!');
-    } catch (err) {
-        console.error(err);
-        alert('Ошибка при добавлении устройства');
-    }
+        alert(translateAlert("message.createDevice"));
+    }  catch (err) {
+    console.error("ОШИБКА:", err);
+    alert(translateAlert("message.invalidCreateDevice"));
+}
 };
 
 // ---------------------- Архивирование устройства ----------------------
 window.archiveDevice = async (groupId, deviceId, btn) => {
-    if (!confirm('Вы уверены, что хотите архивировать устройство?')) return;
+    if (!confirm(translateAlert("message.wantArchiveDevice"))) return;
 
     try {
         const deviceRef = db.ref(`${groupId}/${deviceId}`);
@@ -168,24 +174,25 @@ window.archiveDevice = async (groupId, deviceId, btn) => {
         delete devicesCache[groupId][deviceId];
         updateCounters();
 
-        alert('Устройство архивировано!');
+        alert(translateAlert("message.archiveDevice"));
     } catch (err) {
         console.error(err);
-        alert('Ошибка при архивировании устройства');
+        alert(translateAlert("message.invalidArchiveDevice"));
     }
 };
 
 // ---------------------- Редактирование устройства ----------------------
 window.editDevice = (groupId, deviceId) => {
+    const title = document.querySelector('#addModal .modal-title');
+    title.setAttribute('data-i18n', 'devices.edit.title');
+    applyTranslations(localStorage.getItem('language') || 'ru');
     const device = devicesCache[groupId][deviceId];
     if (!device) return;
 
     document.getElementById('addModal').classList.add('active');
     document.body.style.overflow = 'hidden';
 
-    document.getElementById('deviceType').value =
-        groupId === 'workstations' ? 'Рабочая станция' :
-            groupId === 'network' ? 'Сетевое устройство' : 'Сервер';
+    document.getElementById('deviceType').value = groupId;
     document.getElementById('deviceName').value = device.name;
     document.getElementById('deviceIp').value = device.ip;
     document.getElementById('deviceDomain').value = device.domain || '';
@@ -197,41 +204,87 @@ window.editDevice = (groupId, deviceId) => {
         event.preventDefault();
 
         const name = document.getElementById('deviceName').value.trim();
+        const type = document.getElementById('deviceType').value;
         const ip = document.getElementById('deviceIp').value.trim();
         const domain = document.getElementById('deviceDomain').value.trim();
         const location = document.getElementById('deviceLocation').value.trim();
         const model = document.getElementById('deviceModel').value.trim();
+        const currentDevice = devicesCache[groupId][deviceId];
 
-        if (!name || !ip) return alert('Введите хотя бы имя и IP устройства!');
+        if (!name || !ip) return alert(translateAlert("message.invalidNameOrIP"));
 
-        const updatedData = { name, ip, domain, location, model, lastPing: new Date().toISOString() };
+        const updatedData = {
+            name,
+            ip,
+            domain,
+            location,
+            model,
+            status: currentDevice?.status ?? 'online',
+            lastPing: new Date().toISOString()
+        };
+
+        const newGroup = type;
 
         try {
-            await db.ref(`${groupId}/${deviceId}`).update(updatedData);
-            Object.assign(devicesCache[groupId][deviceId], updatedData);
 
-            // Обновляем строку в таблице
-            const tbody = document.querySelector(`#${groupId} tbody`);
-            const tr = Array.from(tbody.querySelectorAll('tr')).find(r => r.querySelector('td:nth-child(6)').innerText === deviceId);
-            if(tr){
-                tr.querySelector('td:nth-child(1) strong').innerText = name;
-                tr.querySelector('td:nth-child(2)').innerHTML = `${ip}<br><span class="muted">${domain || ''}</span>`;
-                tr.querySelector('td:nth-child(4)').innerText = new Date().toLocaleTimeString();
-                tr.querySelector('td:nth-child(5)').innerText = location || '-';
+            if (newGroup !== groupId) {
+
+                // 1. создать в новой группе
+                await db.ref(`${newGroup}/${deviceId}`).set({
+                    ...updatedData,
+                    id: deviceId
+                });
+
+                // 2. удалить из старой
+                await db.ref(`${groupId}/${deviceId}`).remove();
+
+                // 3. обновить UI
+                const tr = document.querySelector(`#${groupId} tbody tr[data-id="${deviceId}"]`);
+                if (tr) tr.remove();
+                delete devicesCache[groupId][deviceId];
+
+                // 4. добавить в новую таблицу
+                addDeviceRow(newGroup, {
+                    ...updatedData,
+                    id: deviceId
+                });
+
+            } else {
+
+                //  просто обновляем
+                await db.ref(`${groupId}/${deviceId}`).update(updatedData);
+                Object.assign(devicesCache[groupId][deviceId], updatedData);
+
+                // обновление строки
+                const tbody = document.querySelector(`#${groupId} tbody`);
+                const tr = Array.from(tbody.querySelectorAll('tr'))
+                    .find(r => r.querySelector('td:nth-child(6)').innerText === deviceId);
+
+                if (tr) {
+                    tr.querySelector('td:nth-child(1) strong').innerText = name;
+                    tr.querySelector('td:nth-child(2)').innerHTML =
+                        `${ip}<br><span class="muted">${domain || ''}</span>`;
+                    tr.querySelector('td:nth-child(4)').innerText = new Date().toLocaleTimeString();
+                    tr.querySelector('td:nth-child(5)').innerText = location || '-';
+                }
             }
 
+            applyTranslations(localStorage.getItem('language') || 'ru');
             updateCounters();
             closeModal();
-            alert('Устройство успешно обновлено!');
+            alert(translateAlert("message.updateDevice"));
+
         } catch (err) {
             console.error(err);
-            alert('Ошибка при обновлении устройства');
+            alert(translateAlert("message.invalidUpdateDevice"));
         }
     };
 
-    document.querySelector('#addDeviceForm button[type="submit"]').textContent = 'Сохранить изменения';
-};
+    const btn = document.querySelector('#addDeviceForm button[type="submit"]');
 
+    btn.setAttribute('data-i18n', 'devices.save');
+    applyTranslations(localStorage.getItem('language') || 'ru');
+};
 
 // ---------------------- Обновление счетчиков ----------------------
 window.updateCounters = () => {
@@ -240,6 +293,27 @@ window.updateCounters = () => {
         const tbody = document.querySelector(`#${groupId} tbody`);
         const rows = tbody ? Array.from(tbody.querySelectorAll('tr')) : [];
         const total = rows.length;
+        const lang = localStorage.getItem('language') || 'ru';
+        const t = {
+            ru: {
+                devices: 'устройств',
+                online: 'Онлайн',
+                offline: 'Офлайн',
+                critical: 'Критичных',
+                noneCritical: 'Критичных нет',
+                warnings: 'Предупреждений',
+                noneWarnings: 'Предупреждений нет'
+            },
+            en: {
+                devices: 'devices',
+                online: 'Online',
+                offline: 'Offline',
+                critical: 'Critical',
+                noneCritical: 'No critical issues',
+                warnings: 'Warnings',
+                noneWarnings: 'No warnings'
+            }
+        }
 
         let online = 0, offline = 0, warn = 0;
         rows.forEach(row => {
@@ -249,13 +323,25 @@ window.updateCounters = () => {
             else if (status === 'warn') warn++;
         });
 
+        const tr = t[lang];
         const groupCountEl = document.querySelector(`#${groupId} .group-count`);
-        if (groupCountEl) groupCountEl.textContent = `${total} устройств`;
+        if (groupCountEl) {
+            groupCountEl.textContent = `${total} ${tr.devices}`;
+        }
 
         const cardMap = {
-            workstations: [0, `Онлайн: ${online} · Офлайн: ${offline}`],
-            network: [1, warn ? `Критичных: ${warn}` : 'Критичных нет'],
-            servers: [2, warn ? `Предупреждений: ${warn}` : 'Предупреждений нет']
+            workstations: [
+                0,
+                `${tr.online}: ${online} · ${tr.offline}: ${offline}`
+            ],
+            network: [
+                1,
+                warn ? `${tr.critical}: ${warn}` : tr.noneCritical
+            ],
+            servers: [
+                2,
+                warn ? `${tr.warnings}: ${warn}` : tr.noneWarnings
+            ]
         };
 
         const [cardIndex, subtitle] = cardMap[groupId];
@@ -314,7 +400,7 @@ statusSelect?.addEventListener('change', filterDevices);
 window.exportTable = () => {
 
     const activeGroup = document.querySelector('.device-group.active');
-    if (!activeGroup) return alert('Нет активной группы для экспорта!');
+    if (!activeGroup) return alert(translateAlert("message.invalidExportGroup"));
 
     const groupId = activeGroup.id;
 
@@ -325,10 +411,10 @@ window.exportTable = () => {
     };
 
     const table = activeGroup.querySelector("table");
-    if (!table) return alert('Нет таблицы для экспорта!');
+    if (!table) return alert(translateAlert("message.invalidExportTable"));
 
     const rows = table.querySelectorAll("tbody tr");
-    if (!rows.length) return alert('Нет данных для экспорта!');
+    if (!rows.length) return alert(translateAlert("message.invalidExportTable"));
 
     const data = [];
 

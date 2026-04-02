@@ -36,7 +36,7 @@ window.saveAccount = async () => {
     const user = auth.currentUser;
 
     if (!user) {
-        alert("Вы не авторизованы");
+        alert(translateAlert("message.invalidAuth"));
         return;
     }
 
@@ -44,7 +44,7 @@ window.saveAccount = async () => {
     const email = document.getElementById("userEmail").value.trim();
 
     if (!name || !email) {
-        alert("Заполните все поля");
+        alert(translateAlert("message.required"));
         return;
     }
 
@@ -59,7 +59,7 @@ window.saveAccount = async () => {
                 const password = prompt("Введите пароль для подтверждения");
 
                 if (!password) {
-                    alert("Нужно подтвердить пароль");
+                    alert(translateAlert("message.confirmPassword"));
                     return;
                 }
 
@@ -88,15 +88,15 @@ window.saveAccount = async () => {
 
         const timeout = document.getElementById("sessionTimeout").value;
         localStorage.setItem("sessionTimeout", timeout);
-        alert("Сохранено");
+        alert(translateAlert("message.save"));
 
     } catch (error) {
         console.error(error);
 
         if (error.code === "auth/requires-recent-login") {
-            alert("Перезайдите в аккаунт для изменения email");
+            alert(translateAlert("message.loginAccount"));
         } else {
-            alert("Ошибка: " + error.message);
+            alert(translateAlert("message.default") + ": " + error.message);
         }
     }
 };
@@ -106,7 +106,7 @@ window.changePassword = async () => {
     const user = firebase.auth().currentUser;
 
     if (!user) {
-        alert("Вы не авторизованы");
+        alert(translateAlert("message.invalidAuth"));
         return;
     }
 
@@ -115,17 +115,17 @@ window.changePassword = async () => {
     const confirmPassword = document.getElementById("confirmPassword").value;
 
     if (!currentPassword || !newPassword || !confirmPassword) {
-        alert("Заполните все поля");
+        alert(translateAlert("message.required"));
         return;
     }
 
     if (newPassword !== confirmPassword) {
-        alert("Пароли не совпадают");
+        alert(translateAlert("message.passwordsWatch"));
         return;
     }
 
     if (newPassword.length < 6) {
-        alert("Пароль должен быть минимум 6 символов");
+        alert(translateAlert("message.passwordLength"));
         return;
     }
 
@@ -141,7 +141,7 @@ window.changePassword = async () => {
         // смена пароля
         await user.updatePassword(newPassword);
 
-        alert("Пароль успешно изменён");
+        alert(translateAlert("message.editPassword"));
 
         // очистка полей
         document.getElementById("currentPassword").value = "";
@@ -152,11 +152,11 @@ window.changePassword = async () => {
         console.error(error);
 
         if (error.code === "auth/wrong-password") {
-            alert("Неверный текущий пароль");
+            alert(translateAlert("message.invalidPassword"));
         } else if (error.code === "auth/weak-password") {
-            alert("Слишком простой пароль");
+            alert(translateAlert("message.weakPassword"));
         } else {
-            alert("Ошибка: " + error.message);
+            alert(translateAlert("message.default") + ": " + error.message);
         }
     }
 };
@@ -182,7 +182,7 @@ function resetSessionTimer() {
     const timeoutMs = timeoutMinutes * 60 * 1000;
 
     logoutTimer = setTimeout(() => {
-        alert("Сессия истекла");
+        alert(translateAlert("message.sessionExpired"));
         firebase.auth().signOut().then(() => {
             window.location.href = "login";
         });
@@ -225,12 +225,12 @@ window.createUser = async () => {
     const password = document.getElementById("newUserPassword").value;
 
     if (!name || !email || !password) {
-        alert("Заполни все поля");
+        alert(translateAlert("message.required"));
         return;
     }
 
     if (password.length < 6) {
-        alert("Пароль должен быть минимум 6 символов");
+        alert(translateAlert("message.passwordLength"));
         return;
     }
 
@@ -246,25 +246,16 @@ window.createUser = async () => {
             createdAt: Date.now()
         });
 
-        // ⚠️ отправляем подтверждение email
+        // отправляем подтверждение email
         await newUser.sendEmailVerification();
 
-        alert("Пользователь создан");
+        alert(translateAlert("message.createUser"));
 
         closeModal();
 
     } catch (error) {
         console.error(error);
-
-        if (error.code === "auth/email-already-in-use") {
-            alert("Этот email уже используется");
-        } else if (error.code === "auth/invalid-email") {
-            alert("Некорректный email");
-        } else if (error.code === "auth/weak-password") {
-            alert("Слишком слабый пароль");
-        } else {
-            alert("Ошибка: " + error.message);
-        }
+        alert(getErrorMessage(error));
     }
 };
 
@@ -325,5 +316,18 @@ function setLanguage(lang) {
     localStorage.setItem('language', lang);
 }
 
-const el = document.querySelector('[data-i18n="settings.auth"]');
+function getErrorMessage(error) {
+    const lang = localStorage.getItem('language') || 'ru';
+    const t = window.translations[lang].errors;
 
+    switch (error.code) {
+        case "auth/email-already-in-use":
+            return translateAlert("message.emailInUse");
+        case "auth/invalid-email":
+            return translateAlert("message.invalidEmail");
+        case "auth/weak-password":
+            return translateAlert("message.weakPassword");
+        default:
+            return `${translateAlert("message.default")}: ${error.message}`;
+    }
+}
