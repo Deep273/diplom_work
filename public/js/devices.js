@@ -228,34 +228,22 @@ window.editDevice = (groupId, deviceId) => {
         try {
 
             if (newGroup !== groupId) {
-
-                // 1. создать в новой группе
                 await db.ref(`${newGroup}/${deviceId}`).set({
                     ...updatedData,
                     id: deviceId
                 });
-
-                // 2. удалить из старой
                 await db.ref(`${groupId}/${deviceId}`).remove();
-
-                // 3. обновить UI
                 const tr = document.querySelector(`#${groupId} tbody tr[data-id="${deviceId}"]`);
                 if (tr) tr.remove();
                 delete devicesCache[groupId][deviceId];
-
-                // 4. добавить в новую таблицу
                 addDeviceRow(newGroup, {
                     ...updatedData,
                     id: deviceId
                 });
 
             } else {
-
-                //  просто обновляем
                 await db.ref(`${groupId}/${deviceId}`).update(updatedData);
                 Object.assign(devicesCache[groupId][deviceId], updatedData);
-
-                // обновление строки
                 const tbody = document.querySelector(`#${groupId} tbody`);
                 const tr = Array.from(tbody.querySelectorAll('tr'))
                     .find(r => r.querySelector('td:nth-child(6)').innerText === deviceId);
@@ -286,7 +274,6 @@ window.editDevice = (groupId, deviceId) => {
     applyTranslations(localStorage.getItem('language') || 'ru');
 };
 
-// ---------------------- Обновление счетчиков ----------------------
 window.updateCounters = () => {
     const groups = ['workstations', 'network', 'servers'];
     groups.forEach(groupId => {

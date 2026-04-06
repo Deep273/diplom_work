@@ -40,3 +40,10 @@
     margin: 20px;
 }
 
+.card:first-child {
+    height: 100vh;
+}
+
+.card:first-child {
+    height: 40vh;
+}

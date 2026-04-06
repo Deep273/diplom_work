@@ -295,6 +295,7 @@ body {
     box-shadow: var(--shadow-soft);
     padding: 12px 14px;
     overflow-x: auto;
+    margin-top: 18px;
 }
 
 .table {

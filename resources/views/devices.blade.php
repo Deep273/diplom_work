@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Устройства</title>
+
     <link rel="stylesheet" href="{{ asset('css/variables.css') }}">
     <link rel="stylesheet" href="{{ asset('css/devices.css') }}">
 </head>
@@ -11,6 +13,7 @@
 <div class="layout">
     <aside class="sidebar">
         <div class="sidebar-logo">DM</div>
+
         <nav class="sidebar-nav">
             <a href="{{ route('dashboard') }}" class="nav-item" data-i18n="nav.home">Главная</a>
             <a href="{{ route('devices') }}" class="nav-item nav-item-section active" data-i18n="nav.devices">Устройства</a>
@@ -24,165 +27,181 @@
             <a href="{{ route('settings') }}" class="nav-item" data-i18n="nav.settings">Настройки</a>
             <a href="{{ route('connections') }}" class="nav-item" data-i18n="nav.connections">Связь</a>
         </nav>
+
         <div class="sidebar-footer">
             <span class="sidebar-user">admin</span>
-            <a href="{{ route('login') }}" class="nav-item btn-logout" data-i18n="btn.logout">Выход</a>
+            <a href="{{ route('login') }}" class="nav-item btn-logout">Выход</a>
         </div>
     </aside>
 
     <main class="main">
         <header class="main-header">
             <div>
-                <h1 class="page-title" data-i18n="nav.devices">Устройства</h1>
-                <div class="header-meta" data-i18n="devices.subtitle">Общий дашборд по оборудованию</div>
+                <h1 class="page-title">Устройства</h1>
+                <div class="header-meta">Общий дашборд по оборудованию</div>
             </div>
         </header>
-        <section class="page-content">
-            <div class="cards">
-                <div class="card">
-                    <div class="card-title" data-i18n="groupDevices.workstations">Рабочие станции</div>
+
+        <section class="content">
+            <section class="cards">
+                <article class="card">
+                    <h2 class="card-title">Рабочие станции</h2>
                     <div class="card-value">0</div>
                     <div class="card-subtitle">Онлайн: 0 · Офлайн: 0</div>
-                </div>
-                <div class="card">
-                    <div class="card-title" data-i18n="groupDevices.network">Сетевые устройства</div>
+                </article>
+
+                <article class="card">
+                    <h2 class="card-title">Сетевые устройства</h2>
                     <div class="card-value">0</div>
                     <div class="card-subtitle">Критичных нет</div>
-                </div>
-                <div class="card">
-                    <div class="card-title" data-i18n="groupDevices.servers">Серверы</div>
+                </article>
+
+                <article class="card">
+                    <h2 class="card-title">Серверы</h2>
                     <div class="card-value">0</div>
                     <div class="card-subtitle">Предупреждений: 0</div>
-                </div>
-            </div>
+                </article>
+            </section>
 
-            <div class="page-toolbar" style="margin-top: 20px;">
+            <section class="toolbar">
                 <div class="filters">
-                    <input type="text" class="input" data-i18n-placeholder="devices.search" placeholder="Поиск по имени или домену">
+                    <input type="text" class="input" placeholder="Поиск по имени или домену">
                     <select class="input">
-                        <option value="all" data-i18n="status.all">Все статусы</option>
-                        <option value="online" data-i18n="status.online">Онлайн</option>
-                        <option value="offline" data-i18n="status.offline">Офлайн</option>
-                        <option value="warn" data-i18n="status.warn">Предупреждение</option>
+                        <option value="all">Все статусы</option>
+                        <option value="online">Онлайн</option>
+                        <option value="offline">Офлайн</option>
+                        <option value="warn">Предупреждение</option>
                     </select>
                 </div>
-                <div style="display: flex; gap: 10px;">
-                    <button class="btn btn-secondary" data-i18n="table.export" onclick="exportTable()">Экспорт таблицы</button>
-                    <button class="btn btn-primary" data-i18n="devices.add" onclick="openAddModal()">Добавить устройство</button>
-                </div>
-            </div>
 
-            <!-- Группы устройств -->
-            <div id="workstations" class="device-group active">
+                <div class="actions">
+                    <button type="button" class="btn btn-secondary" onclick="exportTable()">Экспорт таблицы</button>
+                    <button type="button" class="btn btn-primary" onclick="openAddModal()">Добавить устройство</button>
+                </div>
+            </section>
+
+            <section id="workstations" class="device-group active">
                 <div class="group-header">
-                    <div class="group-title" data-i18n="groupDevices.workstations">Рабочие станции</div>
+                    <div class="group-title">Рабочие станции</div>
                     <div class="group-count">0 устройств</div>
                 </div>
+
                 <div class="table-wrapper">
                     <table class="table">
                         <thead>
                         <tr>
-                            <th data-i18n="devices.table.name">Наименование</th>
-                            <th data-i18n="devices.table.ip">IP / Домен</th>
-                            <th data-i18n="devices.table.status">Статус</th>
-                            <th data-i18n="devices.table.ping">Последний ping</th>
-                            <th data-i18n="devices.table.location">Локация</th>
-                            <th data-i18n="devices.table.id" style="display:none;">ID</th>
+                            <th>Наименование</th>
+                            <th>IP / Домен</th>
+                            <th>Статус</th>
+                            <th>Последний ping</th>
+                            <th>Локация</th>
+                            <th style="display:none;">ID</th>
                             <th></th>
                         </tr>
                         </thead>
                         <tbody></tbody>
                     </table>
                 </div>
-            </div>
+            </section>
 
-            <div id="network" class="device-group">
+            <section id="network" class="device-group">
                 <div class="group-header">
-                    <div class="group-title" data-i18n="groupDevices.network">Сетевые устройства</div>
+                    <div class="group-title">Сетевые устройства</div>
                     <div class="group-count">0 устройств</div>
                 </div>
+
                 <div class="table-wrapper">
                     <table class="table">
                         <thead>
                         <tr>
-                            <th data-i18n="devices.table.name">Наименование</th>
-                            <th data-i18n="devices.table.ip">IP / Домен</th>
-                            <th data-i18n="devices.table.status">Статус</th>
-                            <th data-i18n="devices.table.ping">Последний ping</th>
-                            <th data-i18n="devices.table.location">Локация</th>
-                            <th data-i18n="devices.table.id" style="display:none;">ID</th>
+                            <th>Наименование</th>
+                            <th>IP / Домен</th>
+                            <th>Статус</th>
+                            <th>Последний ping</th>
+                            <th>Локация</th>
+                            <th style="display:none;">ID</th>
                             <th></th>
                         </tr>
                         </thead>
                         <tbody></tbody>
                     </table>
                 </div>
-            </div>
+            </section>
 
-            <div id="servers" class="device-group">
+            <section id="servers" class="device-group">
                 <div class="group-header">
-                    <div class="group-title"  data-i18n="groupDevices.servers">Серверы</div>
+                    <div class="group-title">Серверы</div>
                     <div class="group-count">0 устройств</div>
                 </div>
+
                 <div class="table-wrapper">
                     <table class="table">
                         <thead>
                         <tr>
-                            <th data-i18n="devices.table.name">Наименование</th>
-                            <th data-i18n="devices.table.ip">IP / Домен</th>
-                            <th data-i18n="devices.table.status">Статус</th>
-                            <th data-i18n="devices.table.ping">Последний ping</th>
-                            <th data-i18n="devices.table.location">Локация</th>
-                            <th data-i18n="devices.table.id" style="display:none;">ID</th>
+                            <th>Наименование</th>
+                            <th>IP / Домен</th>
+                            <th>Статус</th>
+                            <th>Последний ping</th>
+                            <th>Локация</th>
+                            <th style="display:none;">ID</th>
                             <th></th>
                         </tr>
                         </thead>
                         <tbody></tbody>
                     </table>
                 </div>
-            </div>
+            </section>
         </section>
     </main>
 </div>
+
 <div id="addModal" class="modal">
     <div class="modal-overlay" onclick="closeModal()"></div>
+
     <div class="modal-content">
         <div class="modal-header">
-            <h3 class="modal-title" data-i18n="devices.add">Добавить устройство</h3>
-            <button class="modal-close" onclick="closeModal()">×</button>
+            <h3 class="modal-title">Добавить устройство</h3>
+            <button type="button" class="modal-close" onclick="closeModal()">×</button>
         </div>
+
         <form id="addDeviceForm" class="form">
-            <label class="form-field">
-                <span class="form-label">Тип устройства</span>
+            <label class="field">
+                <span>Тип устройства</span>
                 <select class="input" id="deviceType">
-                    <option value="workstations" data-i18n="devices.workstation">Рабочая станция</option>
-                    <option value="network" data-i18n="devices.network">Сетевое устройство</option>
-                    <option value="servers" data-i18n="devices.server">Сервер</option>
+                    <option value="workstations">Рабочая станция</option>
+                    <option value="network">Сетевое устройство</option>
+                    <option value="servers">Сервер</option>
                 </select>
             </label>
-            <label class="form-field">
-                <span class="form-label" data-i18n="devices.table.name">Наименование</span>
+
+            <label class="field">
+                <span>Наименование</span>
                 <input type="text" class="input" id="deviceName" placeholder="Core Router 1">
             </label>
-            <label class="form-field">
-                <span class="form-label" data-i18n="devices.ip">IP адрес</span>
+
+            <label class="field">
+                <span>IP адрес</span>
                 <input type="text" class="input" id="deviceIp" placeholder="192.168.1.1">
             </label>
-            <label class="form-field">
-                <span class="form-label" data-i18n="devices.domain">Доменное имя</span>
+
+            <label class="field">
+                <span>Доменное имя</span>
                 <input type="text" class="input" id="deviceDomain" placeholder="device.example.com">
             </label>
-            <label class="form-field">
-                <span class="form-label" data-i18n="devices.model">Модель</span>
+
+            <label class="field">
+                <span>Модель</span>
                 <input type="text" class="input" id="deviceModel" placeholder="Cisco XYZ">
             </label>
-            <label class="form-field">
-                <span class="form-label" data-i18n="devices.table.location">Локация</span>
-                <input type="text" class="input" id="deviceLocation" data-i18n-placeholder="devices.location" placeholder="Дата-центр 1">
+
+            <label class="field">
+                <span>Локация</span>
+                <input type="text" class="input" id="deviceLocation" placeholder="Дата-центр 1">
             </label>
+
             <div class="modal-actions">
-                <button type="button" class="btn btn-secondary" data-i18n="modal.cancel" onclick="closeModal()">Отмена</button>
-                <button type="submit" class="btn btn-primary" data-i18n="devices.add">Добавить устройство</button>
+                <button type="button" class="btn btn-secondary" onclick="closeModal()">Отмена</button>
+                <button type="submit" class="btn btn-primary">Добавить устройство</button>
             </div>
         </form>
     </div>
@@ -190,15 +209,18 @@
 
 <div id="detailModal" class="modal">
     <div class="modal-overlay" onclick="closeModal()"></div>
-    <div class="modal-content" style="max-width:600px;">
+
+    <div class="modal-content modal-content--detail">
         <div class="modal-header">
             <h3 id="detailTitle">Подробности устройства</h3>
-            <button class="modal-close" onclick="closeModal()">×</button>
+            <button type="button" class="modal-close" onclick="closeModal()">×</button>
         </div>
-        <div class="device-detail-grid" id="deviceDetails"></div>
+
+        <div id="deviceDetails" class="device-detail-grid"></div>
+
         <div class="modal-actions">
-            <a href="{{ route('connections') }}" class="btn btn-secondary" data-i18n="modal.connection">Управление связями</a>
-            <button class="btn btn-primary" data-i18n="modal.cancel" onclick="closeModal()">Закрыть</button>
+            <a href="{{ route('connections') }}" class="btn btn-secondary">Управление связями</a>
+            <button type="button" class="btn btn-primary" onclick="closeModal()">Закрыть</button>
         </div>
     </div>
 </div>
@@ -207,6 +229,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
 <script src="{{ asset('js/translations.js') }}"></script>
 <script src="{{ asset('js/devices.js') }}"></script>
 <script src="{{ asset('js/auth.js') }}"></script>
